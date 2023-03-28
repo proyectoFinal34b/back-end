@@ -3,5 +3,5 @@ import config from './lib/config';
 
 
 app.listen(config.port, function () {
- console.log('App is listening on port 3001!');
+ console.log(`App is listening on port ${config.port}!`);
 });
