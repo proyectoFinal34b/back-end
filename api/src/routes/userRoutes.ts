@@ -5,6 +5,7 @@ const router: Router= Router()
 router.get('/', (req: Request, res: Response) => {
  res.send('soy la ruta getUser!');
 });
+
 router.post('/', (req: Request, res: Response) => {
     res.send('soy la ruta postUser!');
    });
