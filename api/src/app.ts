@@ -3,7 +3,6 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 
-import config from '../lib/config';
 import routes from './routes/index';
 
 const app: Application = express();
@@ -14,7 +13,7 @@ app.use(morgan('dev'));
 
 app.use(
  cors({
-  origin: config.cors,
+  origin: "*",
   credentials: true,
   methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
