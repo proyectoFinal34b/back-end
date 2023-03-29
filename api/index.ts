@@ -5,6 +5,6 @@ console.log(config)
 
 sequelize
 .sync({force: true, logging: false})
-app.listen(config.port, function () {
- console.log(`App is listening on port ${config.port}!`);
+app.listen(config.dbPort, function () {
+ console.log(`App is listening on port ${config.dbPort}!`);
 });
