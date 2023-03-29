@@ -1,37 +1,25 @@
-import {Model, Column, Table, DataType, CreatedAt, UpdatedAt} from 'sequelize-typescript';
+import {Model, Column, Table, CreatedAt, UpdatedAt} from 'sequelize-typescript';
 
 @Table
 export class User extends Model<User> {
-    @Column({
-        type: DataType.NUMBER,
-        primaryKey: true,
-        autoIncrement: true,
-    })
-    id!:number
 
-    @Column({
-        type: DataType.STRING,
-        allowNull:false
-    })
-    nombre!:string
-    
-    @Column({
-        type: DataType.NUMBER,
-        allowNull:false
-    })
-    telefono!:number
+@Column
+name!: string;
 
-    @Column({
-        type: DataType.STRING,
-        allowNull:false
-    })
-    email!:string
-    
-    @CreatedAt
-    @Column
-    createdAt!: Date;
+ @Column
+ lastName!: string;
 
-    @UpdatedAt
-    @Column
-    updatedAt!: Date;  
+ @Column
+ email!:string;
+
+ @Column
+ phoneNumber!: number;
+
+ @CreatedAt
+ @Column
+ createdAt!: Date;
+
+ @UpdatedAt
+ @Column
+ updatedAt!: Date;
 }
