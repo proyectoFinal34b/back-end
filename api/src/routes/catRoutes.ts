@@ -1,21 +1,21 @@
 import {Response, Request, Router, NextFunction} from 'express';
-import { User } from '../models/User';
+import { Cat } from '../models/Cat';
 
 const router: Router= Router()
 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  User.findAll()
-   .then((users) => {
-    res.send(users);
+  Cat.findAll()
+   .then((Cats) => {
+    res.send(Cats);
    })
    .catch((error) => next(error));
  });
 
  router.post('/', (req: Request, res: Response, next: NextFunction) => {
-  const user = req.body;
-  User.create(user)
-   .then((createdUser) => {
-    res.send(createdUser);
+  const cat = req.body;
+  Cat.create(cat)
+   .then((createdCat) => {
+    res.send(createdCat);
    })
    .catch((error) => next(error));
  });

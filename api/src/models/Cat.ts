@@ -1,20 +1,17 @@
 import {Model, Column, Table, CreatedAt, UpdatedAt} from 'sequelize-typescript';
 
 @Table
-export class User extends Model<User> {
+export class Cat extends Model<Cat> {
 
 @Column
 name!: string;
 
  @Column
- lastName!: string;
+ age!: number;
 
  @Column
- email!:string;
-
- @Column
- phoneNumber!: number;
-
+ description!:string;
+  
  @CreatedAt
  @Column
  createdAt!: Date;
