@@ -1,0 +1,24 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "nixpacks",
+    "buildCommand": "echo building!"
+  },
+  "deploy": {
+    "startCommand": "echo starting!",
+    "healthcheckPath": "/",
+    "healthcheckTimeout": 100,
+    "restartPolicyType": "never"
+  },
+  "plugins": {
+      "@railway/plugin-node": {
+        "corsConfigPath": "./cors.config.js"
+      }
+  },
+  "env": {
+      "CORS_ORIGIN": "*",
+      "CORS_CREDENTIALS": "true",
+      "CORS_METHODS": "GET,POST,OPTIONS,PUT,DELETE",
+      "CORS_ALLOWED_HEADERS": "Origin,X-Requested-With,Content-Type,Accept"
+    }
+}
