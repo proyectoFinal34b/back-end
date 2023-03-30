@@ -28,8 +28,8 @@ export const sequelize = new Sequelize({
     Category.belongsToMany(Product,{ through: 'ProductCategory' })
     User.hasMany(Order)
     Order.belongsTo(User)
-    Order.hasMany(Product)
-    Product.hasMany(Order)
+    Order.belongsToMany(Product, { through: 'OrderProduct' });
+    Product.belongsToMany(Order, { through: 'OrderProduct' });
 }
 
 associateModels();

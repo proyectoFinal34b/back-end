@@ -1,12 +1,19 @@
-import {Model, Column, Table, AllowNull} from 'sequelize-typescript';
+import { Model, Column, Table, AllowNull, DataType } from 'sequelize-typescript';
 
 @Table
 export class Order extends Model<Order> {
+
+  @AllowNull(false)
+  @Column(DataType.ARRAY(DataType.INTEGER))
+  list!: number[];
+
   @AllowNull(false)
   @Column
-    date!: Date;
-  
+  state!: string;
+
   @AllowNull(false)
   @Column
-    state!: string;
+  delivery!: string;
+
+
 }
