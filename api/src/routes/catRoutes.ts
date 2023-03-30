@@ -6,7 +6,7 @@ const router: Router= Router()
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
   Cat.findAll()
    .then((Cats) => {
-    res.send(Cats);
+    res.status(200).send(Cats);
    })
    .catch((error) => next(error));
  });
