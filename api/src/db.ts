@@ -22,8 +22,8 @@ export const sequelize = new Sequelize({
 
 //relacion de modelos
   function associateModels() {
-    User.hasMany(Cat);
-    Cat.hasMany(User);
+    User.belongsToMany(Cat, { through: 'UserCats' });
+    Cat.belongsToMany(User, { through: 'UserCats' });
     Product.hasMany(Category)
     Category.hasMany(Product)
     User.hasMany(Order)
