@@ -1,18 +1,10 @@
 import express, { Request, Response, NextFunction } from 'express';
+import { getAllEntries } from '../controllers/entriesControllers';
 import { Entries } from '../models/Entries';
 
 const router = express.Router();
 
-router.get("/", (req: Request, res: Response, next: NextFunction) => {
-    try {
-        Entries.findAll()
-        .then((allEntries) => {
-            res.status(200).send(allEntries);
-        });
-    } catch (error) {
-        res.status(400).json(error);
-    }
-});
+router.get("/", getAllEntries);
 
 router.get("/:id", (req: Request, res: Response, next: NextFunction) => {
     try {

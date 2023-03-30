@@ -1,7 +1,7 @@
 import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType} from 'sequelize-typescript';
 
 @Table
-export class User extends Model<User> {
+export class Admin extends Model<Admin> {
     static find(arg0: { where: { name: any; }; }) {
         throw new Error('Method not implemented.');
     }

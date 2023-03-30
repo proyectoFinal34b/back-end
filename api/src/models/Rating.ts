@@ -1,7 +1,7 @@
 import {Model, Column, Table, DataType, AllowNull, CreatedAt, UpdatedAt} from 'sequelize-typescript';
 
 @Table
-export class Category extends Model<Category> {
+export class Rating extends Model<Rating> {
   @AllowNull(false)
   @Column
     rated!: string;
