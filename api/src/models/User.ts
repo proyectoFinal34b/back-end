@@ -13,7 +13,7 @@ name!: string;
  email!:string;
 
  @Column
- phoneNumbe!: number;
+ phoneNumber!: number;
 
  @CreatedAt
  @Column
