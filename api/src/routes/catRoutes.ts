@@ -1,24 +1,14 @@
-import {Response, Request, Router, NextFunction} from 'express';
-import { Cat } from '../models/Cat';
+import { Router } from 'express';
+import { delCat, getCatById, getCatByName, postCat, putCat } from '../controllers/catControllers';
 
 const router: Router= Router()
 
-router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  Cat.findAll()
-   .then((Cats) => {
-    res.send(Cats);
-   })
-   .catch((error) => next(error));
- });
+router.get("/", getCatByName)
+router.get("/:id", getCatById)
+router.post("/", postCat)
+router.put("/", putCat)
+router.delete("/", delCat)
 
- router.post('/', (req: Request, res: Response, next: NextFunction) => {
-  const cat = req.body;
-  Cat.create(cat)
-   .then((createdCat) => {
-    res.send(createdCat);
-   })
-   .catch((error) => next(error));
- });
 
 
 export default router;
