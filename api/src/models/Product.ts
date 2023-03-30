@@ -11,8 +11,8 @@ export class Product extends Model<Product> {
     summary!: string;
 
   @AllowNull(false)
-  @Column
-    image!: string;
+  @Column(DataType.ARRAY(DataType.STRING))
+    image!: string[];
 
   @AllowNull(false)
   @Column
@@ -29,7 +29,5 @@ export class Product extends Model<Product> {
   }})
     discount!: { value: number; active: boolean }
 
-  @AllowNull(false)
-  @Column
-    rating!: number
+
 }

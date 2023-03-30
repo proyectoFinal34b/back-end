@@ -28,6 +28,10 @@ name!: string;
  @Column({ defaultValue: true })
  status!:boolean;
 
+ @AllowNull(true)
+ @Column
+ arrived!:string
+
  @CreatedAt
  @Column
  createdAt!: Date;
