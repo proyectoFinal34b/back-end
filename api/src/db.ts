@@ -1,4 +1,9 @@
 import {Sequelize} from 'sequelize-typescript';
+import {User} from "./models/User"
+import {Cat} from "./models/Cat"
+import { Product } from './models/Product';
+import { Order } from './models/Order';
+import { Category } from './models/Category';
 import config from '../lib/config';
 import dotenv from "dotenv"
 dotenv.config();
@@ -14,3 +19,19 @@ export const sequelize = new Sequelize({
     port: 7746,
     models: [__dirname + '/models'],
   });
+
+//relacion de modelos
+  function associateModels() {
+    User.hasMany(Cat);
+    Cat.hasMany(User);
+    Product.hasMany(Category)
+    Category.hasMany(Product)
+    User.hasMany(Order)
+    Order.belongsTo(User)
+    Order.hasMany(Product)
+    Product.hasMany(Order)
+}
+
+associateModels();
+
+console.log(User.associations);
