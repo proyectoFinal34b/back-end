@@ -1,10 +1,5 @@
 import {Model, Column, Table, DataType, AllowNull, CreatedAt, UpdatedAt} from 'sequelize-typescript';
 
-interface Discount {
-  value: number;
-  active: boolean;
-}
-
 @Table
 export class Product extends Model<Product> {
   @AllowNull(false)
@@ -28,8 +23,11 @@ export class Product extends Model<Product> {
     price!: number
 
   @AllowNull(true)
-  @Column(DataType.JSON)
-    discount!: Discount
+  @Column({type:DataType.JSON,  defaultValue: { 
+    value: 0,
+    active: false
+  }})
+    discount!: { value: number; active: boolean }
 
   @AllowNull(false)
   @Column
