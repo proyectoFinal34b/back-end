@@ -15,5 +15,8 @@ export class Order extends Model<Order> {
   @Column
   delivery!: string;
 
+  @AllowNull(false)
+  @Column
+  status!: string;
 
 }
