@@ -1,4 +1,4 @@
-import {Model, Column, Table, DataType, AllowNull, CreatedAt, UpdatedAt} from 'sequelize-typescript';
+import {Model, Column, Table, AllowNull} from 'sequelize-typescript';
 
 @Table
 export class Order extends Model<Order> {
