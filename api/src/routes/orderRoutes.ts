@@ -1,24 +1,15 @@
-import {Response, Request, Router, NextFunction} from 'express';
-import {Order} from "../models/Order"
+import { Router } from 'express';
+import { 
+  getOrder, 
+  postOrder
+} from '../controllers/orderControllers';
 
 const router: Router= Router()
 
-router.get('/', (req: Request, res: Response, next: NextFunction) => {
-    Order.findAll()
-        .then((Orders) => {
-            res.send(Orders);
-        })
-        .catch((error) => next(error));
-});
 
-router.post('/', (req: Request, res: Response, next: NextFunction) => {
-    const order = req.body;
-    Order.create(order)
-        .then((createdOrder) => {
-            res.send(createdOrder);
-        })
-        .catch((error) => next(error))
-   });
+router.get("/", getOrder)
+router.post("/", postOrder)
+
 
    router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -34,6 +25,7 @@ router.post('/', (req: Request, res: Response, next: NextFunction) => {
       return res.status(500).send("An error occurred while cancelling the order");
     }
   });
+
 
 
 export default router;
