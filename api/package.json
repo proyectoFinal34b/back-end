@@ -15,11 +15,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-<<<<<<< HEAD
-    "start": "index.ts",
-=======
     "start": "ts-node index.ts",
->>>>>>> 4ca4d7cd1cbaf032826ffdf35065177ca565f6b6
     "dev": "nodemon index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
