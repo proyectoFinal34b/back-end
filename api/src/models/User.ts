@@ -44,11 +44,6 @@ name!: string;
  @Column
  Order!: string;
 
-@AllowNull(true)
- @Column
- phoneNumber!: number;
-
-
  @CreatedAt
  @Column
  createdAt!: Date;
