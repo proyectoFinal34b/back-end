@@ -36,14 +36,6 @@ name!: string;
  @Column
  phoneNumber!: number;
 
- @AllowNull(true)
- @Column({type:DataType.ARRAY(DataType.INTEGER),defaultValue: []})
- sponsor!: number[];
-
- @AllowNull(true)
- @Column({type:DataType.ARRAY(DataType.INTEGER),defaultValue: []})
- order!: number[];
- 
 
  @AllowNull(true)
  @Column({defaultValue:"imagendefault"})
