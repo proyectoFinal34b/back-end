@@ -4,5 +4,15 @@ import {Model, Column, Table, DataType, AllowNull, CreatedAt, UpdatedAt} from 's
 export class Entries extends Model<Entries> {
   @AllowNull(false)
   @Column
-    name!: string;
+  title!: string;
+
+  @AllowNull(false)
+  @Column(DataType.ARRAY(DataType.STRING))
+  images!: string[];
+
+  @AllowNull(false)
+  @Column
+  summary!: string;
 }
+
+//relacion por FK con un Admin

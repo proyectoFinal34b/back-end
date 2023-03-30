@@ -1,5 +1,10 @@
 import {Model, Column, Table, DataType, AllowNull, CreatedAt, UpdatedAt} from 'sequelize-typescript';
 
+interface Discount {
+  value: number;
+  active: boolean;
+}
+
 @Table
 export class Product extends Model<Product> {
   @AllowNull(false)
@@ -22,9 +27,9 @@ export class Product extends Model<Product> {
   @Column
     price!: number
 
-  @AllowNull(false)
-  @Column
-    discount!: number
+  @AllowNull(true)
+  @Column(DataType.JSON)
+    discount!: Discount
 
   @AllowNull(false)
   @Column
