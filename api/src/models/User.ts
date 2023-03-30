@@ -37,12 +37,13 @@ name!: string;
  phoneNumber!: number;
 
  @AllowNull(true)
- @Column(DataType.ARRAY(DataType.NUMBER))
+ @Column({type:DataType.ARRAY(DataType.INTEGER),defaultValue: []})
  sponsor!: number[];
 
  @AllowNull(true)
- @Column(DataType.ARRAY(DataType.NUMBER))
+ @Column({type:DataType.ARRAY(DataType.INTEGER),defaultValue: []})
  order!: number[];
+ 
 
  @AllowNull(true)
  @Column({defaultValue:"imagendefault"})
