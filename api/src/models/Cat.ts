@@ -20,11 +20,11 @@ name!: string;
  @Column
  description!:string;
 
- @AllowNull(false)
+ @AllowNull(true)
  @Column(DataType.ARRAY(DataType.STRING))
  image!:string[];
 
- @AllowNull(false)
+ @AllowNull(true)
  @Column({ defaultValue: true })
  status!:boolean;
 
