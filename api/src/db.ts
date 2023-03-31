@@ -10,6 +10,8 @@ dotenv.config();
 
 config;
 
+
+
 export const sequelize = new Sequelize({
     dialect: 'postgres',
     database: process.env.DB_NAME,
