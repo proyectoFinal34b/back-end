@@ -16,7 +16,7 @@ export const sequelize = new Sequelize({
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     host: process.env.DB_HOST,
-    port: 7746,
+    port: 5432,
     models: [__dirname + '/models'],
   });
 
@@ -35,3 +35,4 @@ export const sequelize = new Sequelize({
 associateModels();
 
 console.log(User.associations);
+console.log(Product.associations);

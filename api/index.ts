@@ -2,8 +2,14 @@ import {sequelize} from "./src/db"
 import app from './src/app';
 import config from './lib/config';
 
+// sequelize
+// .sync({force: true, logging: false})
+// app.listen(config.dbPort, function () {
+//  console.log(`App is listening on port ${config.dbPort}!`);
+// });
+
 sequelize
 .sync({force: true, logging: false})
-app.listen(config.dbPort, function () {
+app.listen(config.port, function () {
  console.log(`App is listening on port ${config.dbPort}!`);
 });
