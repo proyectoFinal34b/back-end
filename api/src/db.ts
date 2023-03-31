@@ -11,6 +11,7 @@ dotenv.config();
 config;
 const dbPort = process.env.DB_PORT ? parseInt(process.env.DB_PORT) : undefined;
 
+
 export const sequelize = new Sequelize({
     dialect: 'postgres',
     database: process.env.DB_NAME,
