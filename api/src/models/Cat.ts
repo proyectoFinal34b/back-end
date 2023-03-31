@@ -15,6 +15,10 @@ name!: string;
 
  @Column
  age!: number;
+ 
+ @AllowNull(false)
+ @Column
+ gender!: string;
 
  @AllowNull(false)
  @Column

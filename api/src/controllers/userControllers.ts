@@ -15,7 +15,7 @@ export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
           .catch((error) => next(error));
       }
       else{
-        User.findOne({ where: { name: name as string } })
+        User.findAll({ where: { name: name as string } })
           .then((findUser) => {
             if(findUser) {
               res.send(findUser);
