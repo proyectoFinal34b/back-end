@@ -12,7 +12,7 @@ const router: Router= Router()
 router.get("/", getUserByName)
 router.get("/:id", getUserById)
 router.post("/", postUser)
-router.put("/", updateUser)
-router.delete("/", delUser)
+router.put("/:id", updateUser)
+router.delete("/:id", delUser)
 
 export default router;

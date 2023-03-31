@@ -61,7 +61,7 @@ export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
 }
 
 export const delUser= async (req: Request, res: Response, next: NextFunction)=>{
-    const { id } = req.body;
+    const { id } = req.params;
     if(id){
         const delUser = await User.findByPk(id)
         User.destroy(
