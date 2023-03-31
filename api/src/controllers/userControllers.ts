@@ -1,5 +1,5 @@
 import {Response, Request, Router, NextFunction} from 'express';
-import { Cat } from '../models/Cat';
+import { sequelize } from '../db';
 import { User } from '../models/User';
 
 
@@ -35,7 +35,7 @@ export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
     const { id } = req.params;
     try {
         if(id){
-            const idUser = await User.findByPk(id, {include: Cat})
+            const idUser = await User.findByPk(id, {include: sequelize.models.Cat})
             
             idUser?
             res.send(idUser):

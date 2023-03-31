@@ -35,3 +35,5 @@ export const sequelize = new Sequelize({
 associateModels();
 
 console.log(User.associations);
+
+
