@@ -28,13 +28,17 @@ name!: string;
  @Column(DataType.ARRAY(DataType.STRING))
  image!:string[];
 
- @AllowNull(true)
+ @AllowNull(false)
  @Column({ defaultValue: true })
  status!:boolean;
 
+ @AllowNull(false)
+ @Column
+ state!:string;// establecer como opciones: adoptado || apadrinado || alberge
+
  @AllowNull(true)
  @Column
- arrived!:string
+ arrived!:Date
 
  @CreatedAt
  @Column

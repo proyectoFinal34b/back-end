@@ -6,8 +6,8 @@ const router: Router= Router()
 router.get("/", getCatByName)
 router.get("/:id", getCatById)
 router.post("/", postCat)
-router.put("/", updateCat)
-router.delete("/", delCat)
+router.put("/:id", updateCat)
+router.delete("/:id", delCat)
 
 
 
