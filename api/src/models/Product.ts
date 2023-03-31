@@ -1,4 +1,5 @@
-import {Model, Column, Table, DataType, AllowNull, CreatedAt, UpdatedAt} from 'sequelize-typescript';
+import {Model, Column, Table, DataType, AllowNull, CreatedAt, UpdatedAt, HasMany} from 'sequelize-typescript';
+import { Rating } from './Rating';
 
 @Table
 export class Product extends Model<Product> {
@@ -28,6 +29,9 @@ export class Product extends Model<Product> {
     active: false
   }})
     discount!: { value: number; active: boolean }
+
+    @HasMany(() => Rating)
+    ratings!: Rating[];
 
 
 }

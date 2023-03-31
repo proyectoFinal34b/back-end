@@ -1,4 +1,5 @@
-import {Model, Column, Table, DataType, AllowNull, CreatedAt, UpdatedAt} from 'sequelize-typescript';
+import {Model, Column, Table, DataType, AllowNull, CreatedAt, UpdatedAt, ForeignKey, BelongsTo} from 'sequelize-typescript';
+import { Product } from './Product';
 
 @Table
 export class Rating extends Model<Rating> {
@@ -9,4 +10,13 @@ export class Rating extends Model<Rating> {
   @AllowNull(true)
   @Column
     review!: string;
+
+
+    @ForeignKey(() => Product)
+  @Column(DataType.INTEGER)
+  productId!: number;
+
+  @BelongsTo(() => Product)
+  product!: Product;
+
 }
