@@ -19,7 +19,6 @@ name!: string;
  @AllowNull(false)
  @Column
  gender!: string;
- 
 
  @AllowNull(false)
  @Column
