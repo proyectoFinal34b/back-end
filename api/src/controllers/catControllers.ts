@@ -69,8 +69,32 @@ export const delCat= async (req: Request, res: Response, next: NextFunction)=>{
     }
 }
 
-export const putCat = (req: Request, res: Response, next: NextFunction)=>{
-    res.send("ruta actualizar cat")
-} 
-
+export const updateCat = (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    try {
+        
+        const { name, age, description, image, status, arrived} = req.body;
+        Cat.findByPk(id)
+        .then((user) => {
+            if(user){
+                user.name = name || user.name;
+                user.age = age || user.age;
+                user.description = description || user.description;
+                user.status = status || user.status;
+                user.arrived =arrived ||user.arrived;
+                user.image = image || user.image;
+  
+              user.save()
+                .then((updated) => {
+                    res.status(200).send(updated);
+                });
+            } else {
+                res.status(404).send(`Gato con id ${id} no encontrado`);
+            }
+        });
+    } catch (error) {
+        res.status(400).json(error);
+    }
+  }
+  
 
