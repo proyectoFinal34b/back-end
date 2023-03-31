@@ -21,6 +21,7 @@ export const sequelize = new Sequelize({
     models: [__dirname + '/models'],
   });
 
+
 //relacion de modelos
   function associateModels() {
     User.belongsToMany(Cat, { through: 'UserCats' });
@@ -34,8 +35,6 @@ export const sequelize = new Sequelize({
 }
 
 associateModels();
-
-console.log(User.associations);
 
 module.exports = {
   ...sequelize.models,
