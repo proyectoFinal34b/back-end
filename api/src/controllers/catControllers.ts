@@ -48,7 +48,7 @@ import { Cat } from '../models/Cat';
 }
 
 export const delCat= async (req: Request, res: Response, next: NextFunction)=>{
-    const {id}=req.body;
+    const {id}=req.params;
     try {
         if(id){
             const delCat = await Cat.findByPk(id)
@@ -73,7 +73,7 @@ export const updateCat = (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     try {
         
-        const { name, age, description, image, status, arrived} = req.body;
+        const { name, age, description, image, status, arrived, gender, state} = req.body;
         Cat.findByPk(id)
         .then((cat) => {
             if(cat){
@@ -81,9 +81,10 @@ export const updateCat = (req: Request, res: Response, next: NextFunction) => {
                 cat.age = age || cat.age;
                 cat.description = description || cat.description;
                 cat.status = status || cat.status;
+                cat.gender = gender || cat.gender;
+                cat.state = state || cat.state;
                 cat.arrived =arrived ||cat.arrived;
                 cat.image = image || cat.image;
-  
               cat.save()
                 .then((updated) => {
                     res.status(200).send(updated);
