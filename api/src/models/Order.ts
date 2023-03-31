@@ -9,10 +9,6 @@ export class Order extends Model<Order> {
 
   @AllowNull(false)
   @Column
-  state!: string;
-
-  @AllowNull(false)
-  @Column
   delivery!: string;
 
   @AllowNull(false)

@@ -4,7 +4,7 @@ import {
   delUser,
   getUserByName,
   getUserById,
-  putUser
+  updateUser
 } from '../controllers/userControllers';
 
 const router: Router= Router()
@@ -12,7 +12,7 @@ const router: Router= Router()
 router.get("/", getUserByName)
 router.get("/:id", getUserById)
 router.post("/", postUser)
-router.put("/", putUser)
-router.delete("/", delUser)
+router.put("/:id", updateUser)
+router.delete("/:id", delUser)
 
 export default router;

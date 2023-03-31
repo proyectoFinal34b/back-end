@@ -7,6 +7,7 @@ export const getOrder= function(req: Request, res: Response, next: NextFunction)
         res.send(orders);
     })
     .catch((error) => next(error));
+    
 }
 
 export const postOrder= function(req: Request, res: Response, next: NextFunction){

@@ -9,6 +9,7 @@ import dotenv from "dotenv"
 dotenv.config();
 
 config;
+const dbPort = process.env.DB_PORT ? parseInt(process.env.DB_PORT) : undefined;
 
 export const sequelize = new Sequelize({
     dialect: 'postgres',
@@ -16,9 +17,10 @@ export const sequelize = new Sequelize({
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     host: process.env.DB_HOST,
-    port: 7746,
+    port: dbPort,
     models: [__dirname + '/models'],
   });
+
 
 //relacion de modelos
   function associateModels() {
@@ -34,4 +36,7 @@ export const sequelize = new Sequelize({
 
 associateModels();
 
-console.log(User.associations);
+module.exports = {
+  ...sequelize.models,
+ sequelize
+}

@@ -1,4 +1,5 @@
-import {Model, Column, Table, DataType, AllowNull, CreatedAt, UpdatedAt} from 'sequelize-typescript';
+import {Model, Column, Table, DataType, AllowNull, CreatedAt, UpdatedAt, HasMany} from 'sequelize-typescript';
+import { Rating } from './Rating';
 
 @Table
 export class Product extends Model<Product> {
@@ -11,8 +12,8 @@ export class Product extends Model<Product> {
     summary!: string;
 
   @AllowNull(false)
-  @Column
-    image!: string;
+  @Column(DataType.ARRAY(DataType.STRING))
+    image!: string[];
 
   @AllowNull(false)
   @Column
@@ -22,11 +23,15 @@ export class Product extends Model<Product> {
   @Column
     price!: number
 
-  @AllowNull(false)
-  @Column
-    discount!: number
+  @AllowNull(true)
+  @Column({type:DataType.JSON,  defaultValue: { 
+    value: 0,
+    active: false
+  }})
+    discount!: { value: number; active: boolean }
 
-  @AllowNull(false)
-  @Column
-    rating!: number
+    @HasMany(() => Rating)
+    ratings!: Rating[];
+
+
 }
