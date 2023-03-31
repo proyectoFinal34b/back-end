@@ -9,6 +9,7 @@ import dotenv from "dotenv"
 dotenv.config();
 
 config;
+const dbPort = process.env.DB_PORT ? parseInt(process.env.DB_PORT) : undefined;
 
 const dbPort = process.env.DB_PORT ? parseInt(process.env.DB_PORT) : undefined;
 
@@ -38,3 +39,8 @@ export const sequelize = new Sequelize({
 associateModels();
 
 console.log(User.associations);
+
+module.exports = {
+  ...sequelize.models,
+ sequelize
+}

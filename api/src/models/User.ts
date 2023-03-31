@@ -1,4 +1,4 @@
-import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull} from 'sequelize-typescript';
+import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType} from 'sequelize-typescript';
 
 @Table
 export class User extends Model<User> {
@@ -36,13 +36,10 @@ name!: string;
  @Column
  phoneNumber!: number;
 
- @AllowNull(true)
- @Column
- sponsor!: string;
 
  @AllowNull(true)
- @Column
- Order!: string;
+ @Column({defaultValue:"imagendefault"})
+ image!: string
 
  @CreatedAt
  @Column
