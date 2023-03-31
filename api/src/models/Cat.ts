@@ -1,4 +1,4 @@
-import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull} from 'sequelize-typescript';
+import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType} from 'sequelize-typescript';
 
 @Table
 export class Cat extends Model<Cat> {
@@ -20,13 +20,17 @@ name!: string;
  @Column
  description!:string;
 
- @AllowNull(false)
- @Column
- image!:string;
+ @AllowNull(true)
+ @Column(DataType.ARRAY(DataType.STRING))
+ image!:string[];
 
- @AllowNull(false)
+ @AllowNull(true)
+ @Column({ defaultValue: true })
+ status!:boolean;
+
+ @AllowNull(true)
  @Column
- status!:string;
+ arrived!:string
 
  @CreatedAt
  @Column

@@ -1,31 +1,41 @@
 import {Response, Request, Router, NextFunction} from 'express';
+import { sequelize } from '../db';
 import { User } from '../models/User';
 
 
 
- export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
+export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
     const{ name } = req.query
     try {
-        if(!name){
-            User.findAll()
-            .then((findUser) => {
-                res.send(findUser);
-   })
-   .catch((error) => next(error));
-        }
-        else{
-            res.send(`Nombre ${name} no encontrado`)
-        }
+      if(!name){
+        User.findAll()
+          .then((findUser) => {
+            res.send(findUser);
+          })
+          .catch((error) => next(error));
+      }
+      else{
+        User.findOne({ where: { name: name as string } })
+          .then((findUser) => {
+            if(findUser) {
+              res.send(findUser);
+            } else {
+              res.send(`Nombre ${name} no encontrado`)
+            }
+          })
+          .catch((error) => next(error));
+      }
     } catch (error) {
-        res.status(400).json( error)
+      res.status(400).json( error)
     }
- }
+  }
+  
 
  export const getUserById= async (req: Request, res: Response, next: NextFunction)=>{
     const { id } = req.params;
     try {
         if(id){
-            const idUser = await User.findByPk(id)
+            const idUser = await User.findByPk(id, {include: sequelize.models.Cat})
             
             idUser?
             res.send(idUser):
