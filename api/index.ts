@@ -4,6 +4,6 @@ import config from './lib/config';
 
 sequelize
 .sync({force: false, logging: false})
-app.listen(config.host, function () {
- console.log(`App is listening on port ${config.host}!`);
+app.listen(config.dbPort, function () {
+ console.log(`App is listening on port ${config.dbPort}!`);
 });
