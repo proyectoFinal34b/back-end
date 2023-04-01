@@ -17,3 +17,9 @@ export const postCategory= function(req: Request, res: Response, next: NextFunct
     })
     .catch((error) => next(error));
 }
+
+export const updateCategory = function(req: Request, res: Response, next: NextFunction){
+    const data = req.body;
+    const id = req.params;
+    
+}

@@ -1,4 +1,6 @@
-import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType} from 'sequelize-typescript';
+import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull} from 'sequelize-typescript';
+import { IsIn } from 'class-validator';
+
 
 @Table
 export class User extends Model<User> {
@@ -40,6 +42,11 @@ name!: string;
  @AllowNull(true)
  @Column({defaultValue:"imagendefault"})
  image!: string
+
+@Column({defaultValue:"user"})
+@IsIn(["user", "admin", "superAdmin"])
+status!: string
+
 
  @CreatedAt
  @Column
