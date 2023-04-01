@@ -1,7 +1,7 @@
 import {Response, Request, Router, NextFunction} from 'express';
 import { sequelize } from '../db';
 import { User } from '../models/User';
-import { Op, col, fn } from 'sequelize';
+import { Op } from 'sequelize';
 
 
 
@@ -44,7 +44,7 @@ export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
     const { id } = req.params;
     try {
         if(id){
-            const idUser = await User.findByPk(id, {include: sequelize.models.Cat})
+            const idUser = await User.findByPk(id, {include: [{model:sequelize.models.Cat},{model: sequelize.models.Order}]})
             
             idUser?
             res.send(idUser):
@@ -100,7 +100,7 @@ export const updateUser = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
       
-      const { name, lastName, email, active, phoneNumber, image} = req.body;
+      const { name, lastName, email, active, phoneNumber, image, status} = req.body;
       User.findByPk(id)
       .then((user) => {
           if(user){
@@ -114,7 +114,11 @@ export const updateUser = (req: Request, res: Response, next: NextFunction) => {
             user.save()
               .then((updated) => {
                   res.status(200).send(updated);
-              });
+              })
+              .catch(error=>{
+                console.log(error)
+                next(error)
+              })
           } else {
               res.status(404).send(`Usuario con id ${id} no encontrado`);
           }
@@ -124,6 +128,36 @@ export const updateUser = (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
+export const activeAdmin = async (req: Request, res: Response, next: NextFunction)=>{
+  const{ id }= req.params
+  const { idAdmin } = req.params
+  const {active, status} = req.body
+  if(active===undefined || !status){return res.status(400).json({message: "No se aceptan campos vacíos"})}
+  try {
+    const admin = await User.findByPk(idAdmin)
+    if(admin?.status==="admin" || admin?.status==="superAdmin"){
+       await User.findByPk(id)
+       .then(user=>{
+        if(user){
+          user.active = active ;
+          user.status = status ;
+         return user.save()
+        } else {
+          res.status(400).send("Usuario no encontrado")
+        }
+       })
+       .then(updateUser =>{
+        res.status(200).send({updateUser, message: "Usuario actualizado"})
+       })
+     
+    } else {
+      res.status(400).json("No tienes permisos para realizar esa acción")
+    }
+    
+  } catch (error) {
+    res.status(400).json({message: error})
+  }
+}
 
 
 
