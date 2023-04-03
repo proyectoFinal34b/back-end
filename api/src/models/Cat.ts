@@ -2,7 +2,9 @@ import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType} from 's
 
 @Table
 export class Cat extends Model<Cat> {
-
+  static find(arg0: { where: { name: any; }; }) {
+    throw new Error('Method not implemented.');
+}
 @Column({
     primaryKey:true,
     autoIncrement:true
