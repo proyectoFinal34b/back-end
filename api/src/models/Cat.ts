@@ -21,7 +21,7 @@ name!: string;
  gender!: string;
 
  @AllowNull(false)
- @Column
+ @Column(DataType.TEXT)
  description!:string;
 
  @AllowNull(true)
