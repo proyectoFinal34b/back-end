@@ -1,7 +1,11 @@
-import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType} from 'sequelize-typescript';
+import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey} from 'sequelize-typescript';
+import { User } from './User';
 
 @Table
 export class Cat extends Model<Cat> {
+  addUser(id: string) {
+    throw new Error('Method not implemented.');
+  }
 
 @Column({
     primaryKey:true,
@@ -47,4 +51,11 @@ name!: string;
  @UpdatedAt
  @Column
  updatedAt!: Date;
+
+ @BelongsTo(() => User, 'sponsorId')
+ sponsor!: User;
+ 
+ @ForeignKey(() => User)
+ @Column
+ sponsorId!: number;
 }

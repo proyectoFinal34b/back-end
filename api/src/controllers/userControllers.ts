@@ -2,6 +2,7 @@ import {Response, Request, Router, NextFunction} from 'express';
 import { sequelize } from '../db';
 import { User } from '../models/User';
 import { Op } from 'sequelize';
+import { Cat } from '../models/Cat';
 
 
 
@@ -159,6 +160,28 @@ export const activeAdmin = async (req: Request, res: Response, next: NextFunctio
   }
 }
 
+
+export const sponsorCat = async (req: Request, res: Response, next: NextFunction)=>{
+  const {id} = req.params;
+  const {idCat} = req.params
+  const {idAdmin} = req.params;
+  try {
+    const admin = await User.findByPk(idAdmin)
+    if(admin?.status==="admin" || admin?.status==="superAdmin"){
+      const cat = await Cat.findByPk(id)
+      if(cat){
+        await cat.$add
+        res.send("El usuario con ID " + id + " ahora es el patrocinador del gato con ID " + id);
+      } else {
+        res.status(404).send("No se encontró ningún gato con el ID especificado.");
+      }
+    } else {
+      res.status(401).send("No tiene permisos para realizar esta acción.");
+    }
+  } catch (error) {
+    next(error);
+  }
+}
 
 
 

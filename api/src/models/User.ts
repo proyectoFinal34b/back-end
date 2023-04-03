@@ -1,5 +1,6 @@
-import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull} from 'sequelize-typescript';
+import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, HasMany} from 'sequelize-typescript';
 import { IsIn } from 'class-validator';
+import { Cat } from './Cat';
 
 
 @Table
@@ -55,4 +56,7 @@ status!: string
  @UpdatedAt
  @Column
  updatedAt!: Date;
+
+ @HasMany(() => Cat, 'sponsorId')
+ sponsoredCats!: Cat[];
 }
