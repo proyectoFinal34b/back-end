@@ -4,6 +4,7 @@ import { User } from '../models/User';
 import { Op } from 'sequelize';
 import { Cat } from '../models/Cat';
 import bcrypt from 'bcrypt'
+import { Order } from '../models/Order';
 
 
 export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
@@ -183,6 +184,26 @@ export const sponsorCat = async (req: Request, res: Response, next: NextFunction
     }
   } catch (error) {
     next(error);
+  }
+}
+
+export const orderUser = async (req: Request, res: Response, next: NextFunction)=>{
+  const {id, idOrder} = req.params;
+  try {
+    
+    const order = await Order.findByPk(idOrder)
+    const user = await User.findByPk(id)
+    if(!order){res.status(400).json("La orden de id "+idOrder+" no existe")}
+    if(user){
+      await user.$set<Order>("orders", order)
+      res.status(200).json("La orden fue añandida al usuario")
+    }else {
+      res.status(400).json(`El usuario de id ${id} no existe`)
+    }
+
+
+  } catch (error:any) {
+    res.status(400).json({error: error.message})
   }
 }
 

@@ -8,6 +8,7 @@ import {
   activeAdmin,
   sponsorCat,
   validateUser,
+  orderUser,
 } from '../controllers/userControllers';
 
 const router: Router= Router()
@@ -19,7 +20,7 @@ router.post("/", postUser)
 router.put("/:id", updateUser)
 router.put("/:id/admin/:idAdmin", activeAdmin)
 router.put("/:id/cat/:idCat/admin/:idAdmin", sponsorCat )
-router.put("/order/:id/admin/:idAdmin")
+router.put("/:id/order/:idOrder", orderUser)
 router.delete("/:id", delUser)
 
-export default router;
+export default router;    

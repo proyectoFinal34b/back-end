@@ -5,7 +5,7 @@ import { Cat } from "./src/models/Cat";
 
 sequelize
 .sync({alter: true, logging: false})
-app.listen(config.dbPort, function () {
+app.listen(3001, function () {
  console.log(`App is listening on port ${config.dbPort}!`);
 });
 

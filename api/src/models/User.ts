@@ -1,6 +1,7 @@
 import {Model, Column, Table, AllowNull, HasMany} from 'sequelize-typescript';
 import { IsIn } from 'class-validator';
 import { Cat } from './Cat';
+import { Order } from './Order';
 
 
 @Table
@@ -51,4 +52,7 @@ status!: string
 
  @HasMany(() => Cat, 'sponsorId')
  sponsoredCats!: Cat[];
+
+ @HasMany(()=> Order, "orderId")
+ orders!: Order[];
 }
