@@ -161,10 +161,10 @@ export const activeAdmin = async (req: Request, res: Response, next: NextFunctio
 }
 
 
-export const sponsorCat = async (req: Request, res: Response, next: NextFunction)=>{
-  const {id} = req.params;
-  const {idCat} = req.params
-  const {idAdmin} = req.params;
+/* export const sponsorCat = async (req: Request, res: Response, next: NextFunction)=>{
+  const {id} = req.params; //ul user que va a apadrinar
+  const {idCat} = req.params //el gato apadrinado
+  const {idAdmin} = req.params; //el admin que tiene la posibilidad de hacer esa asignacion
   try {
     const admin = await User.findByPk(idAdmin)
     if(admin?.status==="admin" || admin?.status==="superAdmin"){
@@ -181,7 +181,7 @@ export const sponsorCat = async (req: Request, res: Response, next: NextFunction
   } catch (error) {
     next(error);
   }
-}
+} */
 
 
 

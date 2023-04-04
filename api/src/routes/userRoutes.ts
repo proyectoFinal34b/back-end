@@ -6,7 +6,6 @@ import {
   getUserById,
   updateUser,
   activeAdmin,
-  sponsorCat
 } from '../controllers/userControllers';
 
 const router: Router= Router()
@@ -16,7 +15,7 @@ router.get("/:id", getUserById)
 router.post("/", postUser)
 router.put("/:id", updateUser)
 router.put("/user/:id/admin/:idAdmin", activeAdmin)
-router.put("/user/:id/cat/:idCat/admin/:idAdmin", sponsorCat)
+router.put("/user/:id/cat/:idCat/admin/:idAdmin", )
 router.put("/order/:id/admin/:idAdmin")
 router.delete("/:id", delUser)
 
