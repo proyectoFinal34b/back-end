@@ -186,6 +186,7 @@ export const sponsorCat = async (req: Request, res: Response, next: NextFunction
   }
 }
 
+
 export const validateUser=async(req:Request, res:Response, next:NextFunction)=>{
   const {email, password} =req.body
   try {
