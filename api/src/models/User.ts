@@ -1,13 +1,10 @@
-import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, HasMany} from 'sequelize-typescript';
+import {Model, Column, Table, AllowNull, HasMany} from 'sequelize-typescript';
 import { IsIn } from 'class-validator';
 import { Cat } from './Cat';
 
 
 @Table
 export class User extends Model<User> {
-    static find(arg0: { where: { name: any; }; }) {
-        throw new Error('Method not implemented.');
-    }
 
 @Column({
     primaryKey:true,
@@ -18,6 +15,10 @@ id!:number
 @AllowNull(false)
 @Column
 name!: string;
+
+@AllowNull(false)
+@Column
+password!:string
 
 @AllowNull(false)
  @Column
@@ -47,15 +48,6 @@ name!: string;
 @Column({defaultValue:"user"})
 @IsIn(["user", "admin", "superAdmin"])
 status!: string
-
-
- @CreatedAt
- @Column
- createdAt!: Date;
-
- @UpdatedAt
- @Column
- updatedAt!: Date;
 
  @HasMany(() => Cat, 'sponsorId')
  sponsoredCats!: Cat[];

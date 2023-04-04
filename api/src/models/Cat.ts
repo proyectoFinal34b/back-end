@@ -3,10 +3,9 @@ import { User } from './User';
 
 @Table
 export class Cat extends Model<Cat> {
-  addUser(id: string) {
+  static find(arg0: { where: { name: any; }; }) {
     throw new Error('Method not implemented.');
-  }
-
+}
 @Column({
     primaryKey:true,
     autoIncrement:true

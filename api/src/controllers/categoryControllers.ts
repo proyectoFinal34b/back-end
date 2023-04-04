@@ -94,9 +94,3 @@ export const updateCategory = (req: Request, res: Response, next: NextFunction) 
         res.status(400).json(error);
     }
 }
-
-export const updateCategory = function(req: Request, res: Response, next: NextFunction){
-    const data = req.body;
-    const id = req.params;
-    
-}

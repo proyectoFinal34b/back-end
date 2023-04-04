@@ -3,7 +3,7 @@ import { sequelize } from '../db';
 import { User } from '../models/User';
 import { Op } from 'sequelize';
 import { Cat } from '../models/Cat';
-
+import bcrypt from 'bcrypt'
 
 
 export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
@@ -56,15 +56,17 @@ export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
     }
 }
  
- export const postUser=(req: Request, res: Response, next: NextFunction)=>{
-    const {name,lastName,email,active,phoneNumber,image,status} = req.body;
+ export const postUser=async (req: Request, res: Response, next: NextFunction)=>{
+    const {name,lastName,email, password} = req.body;
+    const user = req.body
     try{
-      if(!name || !lastName || !email){
+      if(!name || !lastName || !email || !password){
         res.status(422).json({ message: "Falta información: nombre, apellido o correo electrónico" });
         return;
       }else{
-         const user = req.body
-        User.create(user)
+        const passHash:any= await bcrypt.hash(password,10)
+
+        User.create({...user, password:passHash})
         .then((createdUser) => {
             res.status(200).json({message:"usuario creado con exito!!!", createdUser });
         })
@@ -101,7 +103,7 @@ export const updateUser = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
       
-      const { name, lastName, email, active, phoneNumber, image, status} = req.body;
+      const { name, lastName, email, active, phoneNumber, image} = req.body;
       User.findByPk(id)
       .then((user) => {
           if(user){
@@ -136,7 +138,7 @@ export const activeAdmin = async (req: Request, res: Response, next: NextFunctio
   if(active===undefined || !status){return res.status(400).json({message: "No se aceptan campos vacíos"})}
   try {
     const admin = await User.findByPk(idAdmin)
-    if(admin?.status==="admin" || admin?.status==="superAdmin"){
+    if(admin?.status==="superAdmin"){
        await User.findByPk(id)
        .then(user=>{
         if(user){
@@ -161,17 +163,18 @@ export const activeAdmin = async (req: Request, res: Response, next: NextFunctio
 }
 
 
-/* export const sponsorCat = async (req: Request, res: Response, next: NextFunction)=>{
+export const sponsorCat = async (req: Request, res: Response, next: NextFunction)=>{
   const {id} = req.params; //ul user que va a apadrinar
   const {idCat} = req.params //el gato apadrinado
   const {idAdmin} = req.params; //el admin que tiene la posibilidad de hacer esa asignacion
   try {
     const admin = await User.findByPk(idAdmin)
     if(admin?.status==="admin" || admin?.status==="superAdmin"){
-      const cat = await Cat.findByPk(id)
+      const cat = await Cat.findByPk(idCat)
       if(cat){
-        await cat.$add
-        res.send("El usuario con ID " + id + " ahora es el patrocinador del gato con ID " + id);
+        const sponsor = await User.findByPk(id)
+        await cat.$set<User>("sponsor", sponsor)
+        res.send("El usuario con ID " + id + " ahora es el patrocinador del gato con ID " + idCat);
       } else {
         res.status(404).send("No se encontró ningún gato con el ID especificado.");
       }
@@ -181,7 +184,27 @@ export const activeAdmin = async (req: Request, res: Response, next: NextFunctio
   } catch (error) {
     next(error);
   }
-} */
+}
+
+export const validateUser=async(req:Request, res:Response, next:NextFunction)=>{
+  const {email, password} =req.body
+  try {
+    if(!email)return res.status(409).json("Debe ingresar un email")
+    if(!password)return res.status(409).json("Debe ingresar contraseña")
+    
+    const user = await User.findOne({ where: { email: email as string } })
+    if(!user)return res.status(409).json("Las credenciales no coinciden")
+    
+    const validateHash = await bcrypt.compare(password, user.password)
+    const validatedUser = await User.findByPk(user.id, {include: [{model:sequelize.models.Cat},{model: sequelize.models.Order}]})
+    validateHash ?
+    res.status(200).json(validatedUser) :
+    res.status(409).json("contraseña incorrecta")
+
+  } catch (error:any) {
+    res.status(500).json({error:error.message})
+  }
+};
 
 
 
