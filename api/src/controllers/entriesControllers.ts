@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Entries } from '../models/Entries';
+import { User } from '../models/User';
 
 export const getAllEntries = (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -39,24 +40,30 @@ export const createEntry = async (req: Request, res: Response, next: NextFunctio
     }
 }
 
-export const updateEntry = (req: Request, res: Response, next: NextFunction) => {
+export const updateEntry = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
+        const { idAdmin } = req.params;
         const { title, images, summary } = req.body;
-        Entries.findByPk(id)
-        .then((entry) => {
-            if(entry){
-                entry.title = title || entry.title;
-                entry.images = images || entry.images;
-                entry.summary = summary || entry.summary;
-                entry.save()
-                .then((updatedEntry) => {
-                    res.status(200).send(updatedEntry);
-                });
-            } else {
-                res.status(404).send(`Entry con id ${id} no encontrado`);
-            }
-        });
+        const admin = await User.findByPk(idAdmin)
+        if(admin?.status==="admin" || admin?.status==="superAdmin"){
+            Entries.findByPk(id)
+            .then((entry) => {
+                if(entry){
+                    entry.title = title || entry.title;
+                    entry.images = images || entry.images;
+                    entry.summary = summary || entry.summary;
+                    entry.save()
+                    .then((updatedEntry) => {
+                        res.status(200).send(updatedEntry);
+                    });
+                } else {
+                    res.status(404).send(`Entry con id ${id} no encontrado`);
+                }
+            });
+        } else {
+            res.status(400).json("No tenes permisos para realizar esta acción")
+        }
     } catch (error) {
         res.status(400).json(error);
     }

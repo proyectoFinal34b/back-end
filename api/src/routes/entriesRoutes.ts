@@ -7,7 +7,7 @@ const   router = express.Router();
 router.get("/", getAllEntries);
 router.get("/:id", getEntryById );
 router.post("/", createEntry);
-router.put("/:id", updateEntry);
+router.put("/:id/admin/:idAdmin", updateEntry);
 router.delete("/:id", deleteEntry);
 
 

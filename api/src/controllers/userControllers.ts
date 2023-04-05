@@ -111,10 +111,8 @@ export const updateUser = (req: Request, res: Response, next: NextFunction) => {
               user.name = name || user.name;
               user.lastName = lastName || user.lastName;
               user.email = email || user.email;
-              user.active = active || user.active;
               user.phoneNumber =phoneNumber ||user.phoneNumber;
               user.image = image || user.image;
-
             user.save()
               .then((updated) => {
                   res.status(200).send(updated);
