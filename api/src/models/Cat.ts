@@ -1,8 +1,11 @@
-import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType} from 'sequelize-typescript';
+import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey} from 'sequelize-typescript';
+import { User } from './User';
 
 @Table
 export class Cat extends Model<Cat> {
-
+  static find(arg0: { where: { name: any; }; }) {
+    throw new Error('Method not implemented.');
+}
 @Column({
     primaryKey:true,
     autoIncrement:true
@@ -47,4 +50,11 @@ name!: string;
  @UpdatedAt
  @Column
  updatedAt!: Date;
+
+ @BelongsTo(() => User, 'sponsorId')
+ sponsor!: User;
+ 
+ @ForeignKey(() => User)
+ @Column
+ sponsorId!: number;
 }

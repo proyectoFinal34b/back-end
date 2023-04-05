@@ -1,4 +1,4 @@
-import {Response, Request, Router, NextFunction} from 'express';
+import {Response, Request, NextFunction} from 'express';
 import { Cat } from '../models/Cat';
 
  export const getCatByName =(req:Request, res: Response, next: NextFunction)=>{
@@ -10,12 +10,19 @@ import { Cat } from '../models/Cat';
                 res.send(findCat);
    })
    .catch((error) => next(error));
-        }
-        else{
-            res.send(`Cat ${name} no encontrado`)
-        }
+        }else{
+            Cat.findAll({ where: { name: name as string } })
+              .then((findCat) => {
+                if(findCat) {
+                  res.send(findCat);
+                } else {
+                  res.send(`Cat ${name} no encontrado`)
+                }
+              })
+              .catch((error) => next(error));
+          }
     } catch (error) {
-        res.status(400).json( error)
+        res.status(400).send( error)
     }
  }
 

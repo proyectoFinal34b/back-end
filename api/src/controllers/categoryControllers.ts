@@ -50,6 +50,7 @@ export const postCategory= function(req: Request, res: Response, next: NextFunct
         })
         .catch((error) => next(error));
     }
+
     catch(error){
         res.status(400).json(error)
     }

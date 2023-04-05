@@ -1,5 +1,4 @@
 import {Response, Request, NextFunction} from 'express';
-import { sequelize } from '../db';
 import { Product } from "../models/Product"
 import { Rating } from '../models/Rating';
 
