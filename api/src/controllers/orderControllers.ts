@@ -3,19 +3,39 @@ import { Order } from "../models/Order"
 import { User } from '../models/User';
 import { Product } from '../models/Product';
 
-export const getOrder = async (req:Request, res: Response, next: NextFunction)=>{
-    try{
-            Order.findAll()
-             .then((findOrder) => {
-               res.send(findOrder);
-            })
-            .catch((error) => next(error));   
-        
-    }catch (error) {
-        res.status(400).json( error)
+export const getOrder = async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    try {
+      if (id) {
+        const order = await Order.findByPk(id);
+        if (order) {
+          res.send(order);
+        } else {
+          res.send(`Order ID: ${id} not found`);
+        }
+      } else {
+        const orders = await Order.findAll();
+        const ordersWithProducts = [];
+        if (orders) {
+          for (const order of orders) {
+            const productList = [];
+            if (order.list) {
+              for (const item of order.list) {
+                const product = await Product.findByPk(item);
+                if (product) {
+                  productList.push(product); // Agregar directamente el producto a la lista
+                }
+              }
+            }
+            ordersWithProducts.push({ ...order.dataValues, list: productList }); // Incluir la lista de productos sin la propiedad "product"
+          }
+        }
+        res.send(ordersWithProducts);
+      }
+    } catch (error) {
+      res.status(400).json(error);
     }
-        
-}
+  }
 
 export const postOrder= function(req: Request, res: Response, next: NextFunction){
     const order = req.body;
