@@ -1,4 +1,5 @@
 import express, {Application, Request, Response, NextFunction} from 'express';
+import { ErrorRequestHandler } from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -33,5 +34,11 @@ interface error {
    });
 
    app.use('/', routes)
+   const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Internal server error' });
+  };
+  
+  app.use(errorHandler);
 
 export default app;
