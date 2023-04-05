@@ -1,8 +1,17 @@
-import {Model, Column, Table, DataType, AllowNull, CreatedAt, UpdatedAt, HasMany} from 'sequelize-typescript';
+import {Model, Column, Table, DataType, AllowNull, ForeignKey, CreatedAt, UpdatedAt, HasMany, BelongsToMany, BelongsTo} from 'sequelize-typescript';
 import { Rating } from './Rating';
+import { Category } from './Category';
+import { Order } from './Order';
+import {ProductOrder}  from "./ProductOrder"
 
 @Table
 export class Product extends Model<Product> {
+  @Column({
+    primaryKey: true,
+    autoIncrement: true,
+  })
+  id!: number;
+
   @AllowNull(false)
   @Column
     name!: string;
@@ -23,6 +32,10 @@ export class Product extends Model<Product> {
   @Column
     price!: number
 
+  @AllowNull(false)
+  @Column({defaultValue:true})
+    active!:boolean
+
   @AllowNull(true)
   @Column({type:DataType.JSON,  defaultValue: { 
     value: 0,
@@ -30,8 +43,20 @@ export class Product extends Model<Product> {
   }})
     discount!: { value: number; active: boolean }
 
-    @HasMany(() => Rating)
-    ratings!: Rating[];
+  // @BelongsToMany(() => Rating, "productRating")
+  //   ratings!: Rating[];
 
+  @ForeignKey(() => Order)
+  @Column(DataType.INTEGER)
+    orderId!: number;
 
+  @BelongsToMany(() => Order, () => ProductOrder)  
+    order!: Order;
+
+  @ForeignKey(() => Category)
+  @Column(DataType.INTEGER)
+    categoryId!: number;
+
+  @BelongsTo (() => Category)
+    category!: Category;
 }
