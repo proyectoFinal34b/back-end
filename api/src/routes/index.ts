@@ -5,7 +5,6 @@ import productRoutes from "./productRoutes"
 import categoryRoutes from "./categoryRoutes"
 import orderRoutes from "./orderRoutes"
 import entriesRoutes from "./entriesRoutes"
-
 const router = Router();
 
 router.use('/user', userRoutes);

@@ -1,11 +1,17 @@
-import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey} from 'sequelize-typescript';
+import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType, ForeignKey, BelongsToMany} from 'sequelize-typescript';
 import { User } from './User';
+import { UserCat } from './UserCat';
 
 @Table
 export class Cat extends Model<Cat> {
+  static catId: [];
+  
   static find(arg0: { where: { name: any; }; }) {
     throw new Error('Method not implemented.');
 }
+@BelongsToMany(()=>User, ()=> UserCat)
+sponsor!: User[];
+  
 @Column({
     primaryKey:true,
     autoIncrement:true
@@ -50,9 +56,6 @@ name!: string;
  @UpdatedAt
  @Column
  updatedAt!: Date;
-
- @BelongsTo(() => User, 'sponsorId')
- sponsor!: User;
  
  @ForeignKey(() => User)
  @Column

@@ -16,7 +16,7 @@ import { Cat } from '../models/Cat';
                 if(findCat) {
                   res.send(findCat);
                 } else {
-                  res.send(`Cat ${name} no encontrado`)
+                  res.status(400).json(`Cat ${name} no encontrado`)
                 }
               })
               .catch((error) => next(error));
