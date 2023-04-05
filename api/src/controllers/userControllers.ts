@@ -104,7 +104,7 @@ export const updateUser = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
       
-      const { name, lastName, email, active, phoneNumber, image} = req.body;
+      const { name, lastName, email, phoneNumber, image} = req.body;
       User.findByPk(id)
       .then((user) => {
           if(user){
@@ -162,7 +162,7 @@ export const activeAdmin = async (req: Request, res: Response, next: NextFunctio
 }
 
 
-export const sponsorCat = async (req: Request, res: Response, next: NextFunction)=>{
+/* export const sponsorCat = async (req: Request, res: Response, next: NextFunction)=>{
   const {id} = req.params; //ul user que va a apadrinar
   const {idCat} = req.params //el gato apadrinado
   const {idAdmin} = req.params; //el admin que tiene la posibilidad de hacer esa asignacion
@@ -172,7 +172,8 @@ export const sponsorCat = async (req: Request, res: Response, next: NextFunction
       const cat = await Cat.findByPk(idCat)
       if(cat){
         const sponsor = await User.findByPk(id)
-        await cat.$set<User>("sponsor", sponsor)
+        const previousSponsors = await cat.$get('sponsors'); // Obtener los patrocinadores anteriores
+        await cat.$set('sponsors', [...previousSponsors, sponsor]); // Establecer el nuevo patrocinador
         res.send("El usuario con ID " + id + " ahora es el patrocinador del gato con ID " + idCat);
       } else {
         res.status(404).send("No se encontró ningún gato con el ID especificado.");
@@ -183,7 +184,7 @@ export const sponsorCat = async (req: Request, res: Response, next: NextFunction
   } catch (error) {
     next(error);
   }
-}
+} */
 
 export const orderUser = async (req: Request, res: Response, next: NextFunction)=>{
   const {id, idOrder} = req.params;
