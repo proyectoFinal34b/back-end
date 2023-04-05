@@ -32,9 +32,16 @@ export const getEntryById = (req: Request, res: Response, next: NextFunction) =>
 
 export const createEntry = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const {idAdmin} = req.params;
         const entry = req.body;
-        const newEntry: Entries = await Entries.create(entry);
-        res.status(201).send(newEntry);
+        const admin = await User.findByPk(idAdmin)
+        if(admin?.status==="admin" || admin?.status==="superAdmin"){
+          const newEntry: Entries = await Entries.create(entry);
+        res.status(201).send(newEntry);  
+        }else{
+            res.status(400).json("No tienes permisos para realizar esta acción")
+        }
+        
     } catch (error) {
         res.status(400).json(error);
     }

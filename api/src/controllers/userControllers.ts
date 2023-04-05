@@ -134,8 +134,8 @@ export const activeAdmin = async (req: Request, res: Response, next: NextFunctio
   const{ id }= req.params
   const { idAdmin } = req.params
   const {active, status} = req.body
-  if(active===undefined || !status){return res.status(400).json({message: "No se aceptan campos vacíos"})}
   try {
+    if(active===undefined || !status){return res.status(400).json({message: "No se aceptan campos vacíos"})}
     const admin = await User.findByPk(idAdmin)
     if(admin?.status==="superAdmin"){
        await User.findByPk(id)
