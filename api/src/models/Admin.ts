@@ -1,4 +1,4 @@
-import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType} from 'sequelize-typescript';
+import {Model, Column, Table, AllowNull} from 'sequelize-typescript';
 
 @Table
 export class Admin extends Model<Admin> {
@@ -14,15 +14,14 @@ id!:number;
 
 @AllowNull(false)
 @Column
-name!:string;
+username!:string;
 
 @AllowNull(false)
 @Column
-email!:string
+password!:string
 
 @AllowNull(false)
 @Column({defaultValue: false})
 isSuperAdmin!: boolean
-
 
 }

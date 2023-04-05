@@ -1,10 +1,18 @@
-import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType} from 'sequelize-typescript';
+import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsToMany} from 'sequelize-typescript';
+import { Cat } from './Cat';
+import {UserCat} from "./UserCat"
 
 @Table
 export class User extends Model<User> {
+  
+  [x: string]: any;
     static find(arg0: { where: { name: any; }; }) {
         throw new Error('Method not implemented.');
+
+       
     }
+@BelongsToMany(()=>Cat, ()=> UserCat)
+    cats!: Cat[];
 
 @Column({
     primaryKey:true,
@@ -38,7 +46,7 @@ name!: string;
 
 
  @AllowNull(true)
- @Column({defaultValue:"imagendefault"})
+ @Column({defaultValue: "Imagen default"})
  image!: string
 
  @CreatedAt
