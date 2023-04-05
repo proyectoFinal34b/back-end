@@ -27,8 +27,6 @@ export const sequelize = new Sequelize({
   function associateModels() {
     Product.belongsToMany(Category,{ through: 'ProductCategory' })
     Category.belongsToMany(Product,{ through: 'ProductCategory' })
-    User.hasMany(Order)
-    Order.belongsTo(User)
     Order.belongsToMany(Product, { through: 'OrderProduct' });
     Product.belongsToMany(Order, { through: 'OrderProduct' });
 }

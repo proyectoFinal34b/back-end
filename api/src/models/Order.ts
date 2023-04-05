@@ -4,6 +4,12 @@ import { User } from './User';
 @Table
 export class Order extends Model<Order> {
 
+  @Column({
+    primaryKey:true,
+    autoIncrement:true
+})
+id!:number
+
   @AllowNull(false)
   @Column(DataType.ARRAY(DataType.INTEGER))
   list!: number[];

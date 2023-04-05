@@ -1,22 +1,16 @@
 import {Response, Request, NextFunction} from 'express';
 import { Order } from "../models/Order"
+import { User } from '../models/User';
+import { Product } from '../models/Product';
 
 export const getOrder = async (req:Request, res: Response, next: NextFunction)=>{
-    const { id } = req.params;
     try{
-        if(id){
-            const idOrder = await Order.findByPk(id)
-            idOrder?
-            res.send(idOrder):
-            res.send(`Order ID: ${id} not found`)      
-        }
-        else{
             Order.findAll()
              .then((findOrder) => {
                res.send(findOrder);
             })
             .catch((error) => next(error));   
-        } 
+        
     }catch (error) {
         res.status(400).json( error)
     }
@@ -37,6 +31,34 @@ export const postOrder= function(req: Request, res: Response, next: NextFunction
     }
 }
 
+export const getOrderById = async (req: Request, res: Response, next: NextFunction)=>{
+    const { id } = req.params;
+    try{
+        const order = await Order.findByPk(id)
+
+        if(!order){
+         res.send(` La orden de ID ${id} no se ha encontrado`)    
+        }
+
+        const productList = [];
+    
+        if (order?.list) {
+            for (const item of order.list) {
+              const product = await Product.findByPk(item);
+              if (product) {
+                productList.push(product);
+              }
+            }
+          }
+
+        res.status(200).send({ ...order?.dataValues, list: productList })
+         
+    }catch (error) {
+        res.status(400).json( error)
+    }    
+}
+
+
 export const delOrder = async (req: Request, res: Response, next: NextFunction)=>{
     const { id } = req.params;
     if(id){
@@ -55,10 +77,13 @@ export const delOrder = async (req: Request, res: Response, next: NextFunction)=
     }
 }
 
-export const updateOrder = (req: Request, res: Response, next: NextFunction) => {
+export const updateOrder = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
+    const { idAdmin } = req.params;
+    const { list, delivery, status } = req.body;
     try {
-        const { list, delivery, status } = req.body;
+        const admin = await User.findByPk(idAdmin)
+        if(admin?.status==="admin" || admin?.status==="superAdmin"){
         Order.findByPk(id)
         .then((order) => {
             if(order){
@@ -73,6 +98,11 @@ export const updateOrder = (req: Request, res: Response, next: NextFunction) => 
                 res.status(404).send(`Orden con id ${id} no encontrado`);
             }
         });
+        } else {
+            res.status(400).json("No tienes permiso para realizar esa acción")
+        }
+        
+
     } catch (error) {
         res.status(400).json(error);
     }
