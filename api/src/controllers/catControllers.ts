@@ -1,6 +1,5 @@
 import {Response, Request, NextFunction} from 'express';
 import { Cat } from '../models/Cat';
-import { User } from '../models/User';
 
  export const getCatByName =(req:Request, res: Response, next: NextFunction)=>{
     const{ name } = req.query
@@ -79,13 +78,11 @@ export const delCat= async (req: Request, res: Response, next: NextFunction)=>{
     }
 }
 
-export const updateCat = async (req: Request, res: Response, next: NextFunction) => {
+export const updateCat = (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
-    const { idAdmin } = req.params;
     try {
+        
         const { name, age, description, image, status, arrived, gender, state} = req.body;
-        const admin = await User.findByPk(idAdmin)
-        if(admin?.status==="admin" || admin?.status==="superAdmin"){
         Cat.findByPk(id)
         .then((cat) => {
             if(cat){
@@ -105,10 +102,6 @@ export const updateCat = async (req: Request, res: Response, next: NextFunction)
                 res.status(404).send(`Gato con id ${id} no encontrado`);
             }
         });
-        } else {
-            res.status(400).json("No tienes permisos para realizar esa acción")
-        }
-
     } catch (error) {
         res.status(400).json(error);
     }

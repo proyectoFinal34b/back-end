@@ -1,7 +1,6 @@
 import {Response, Request, NextFunction} from 'express';
 import { Product } from "../models/Product"
 import { Rating } from '../models/Rating';
-import { Op } from 'sequelize';
 
 export const getProductByName =(req:Request, res: Response, next: NextFunction)=>{
   const{ name } = req.query
@@ -14,12 +13,7 @@ export const getProductByName =(req:Request, res: Response, next: NextFunction)=
         .catch((error) => next(error));
     }
     else{
-      Product.findAll({         
-        where: {
-        name: {
-          [Op.iLike]: `%${name}%`, // buscar en cualquier parte del nombre ignorando mayúsculas/minúsculas
-        },
-      },})
+      Product.findAll({ where: { name: name as string } })
         .then((findProduct) => {
           if(findProduct) {
             res.send(findProduct);
