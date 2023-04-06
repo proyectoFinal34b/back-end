@@ -6,7 +6,7 @@ import {
   getUserById,
   updateUser,
   activeAdmin,
-/*   sponsorCat, */
+  sponsorCat, 
   validateUser,
   orderUser,
 } from '../controllers/userControllers';
@@ -19,7 +19,7 @@ router.get("/:id", getUserById)
 router.post("/", postUser)
 router.put("/:id", updateUser)
 router.put("/:id/admin/:idAdmin", activeAdmin)
-router.put("/:id/cat/:idCat/admin/:idAdmin", /* sponsorCat */ )
+router.put("/:id/cat/:idCat/admin/:idAdmin",  sponsorCat  )
 router.put("/:id/order/:idOrder", orderUser)
 router.delete("/:id", delUser)
 
