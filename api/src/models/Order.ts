@@ -1,14 +1,14 @@
-import { Model, Column, Table, AllowNull, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
-import { User } from './User';
+import { Model, Column, Table, AllowNull, DataType, BelongsToMany } from 'sequelize-typescript';
+import { Product } from "./Product"
+import { ProductOrder } from "./ProductOrder"
 
 @Table
 export class Order extends Model<Order> {
-
   @Column({
-    primaryKey:true,
-    autoIncrement:true
-})
-id!:number
+    primaryKey: true,
+    autoIncrement: true,
+  })
+  id!: number;
 
   @AllowNull(false)
   @Column(DataType.ARRAY(DataType.INTEGER))
@@ -22,11 +22,6 @@ id!:number
   @Column
   status!: string;
 
-  @BelongsTo(() => User, 'orderId')
-  order!: User;
-  
-  @ForeignKey(() => User)
-  @Column
-  orderId!: number;
-
+  @BelongsToMany(() => Product, () => ProductOrder)
+    product!: Product;
 }
