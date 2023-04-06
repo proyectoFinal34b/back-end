@@ -40,6 +40,7 @@ export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
       res.status(400).json( error)
     }
   }
+
   
 
  export const getUserById= async (req: Request, res: Response, next: NextFunction)=>{
@@ -51,11 +52,11 @@ export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
             idUser?
             res.send(idUser):
             res.send(`ID: ${id} not found`)
-        }    
-    } catch (error) { 
-        res.status(400).json( error)
-    }
-}
+        } 
+  } catch (error:any) {
+    res.status(500).json({error : error.message});
+  }
+};
  
  export const postUser=async (req: Request, res: Response, next: NextFunction)=>{
     const {name,lastName,email, password} = req.body;
@@ -76,57 +77,58 @@ export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
           next(res.status(400).json({msg: error}))});
       }
 
-    }
-    catch(error){
-        res.status(400).json( error)
-    }
-}
-
-export const delUser= async (req: Request, res: Response, next: NextFunction)=>{
-    const { id } = req.params;
-    if(id){
-        const delUser = await User.findByPk(id)
-        User.destroy(
-            {
-                where:
-                { id }
-            })
-        delUser ?
-        res.send(delUser) :
-        res.send("User not found")
-    }
-    else {
-        res.send("ingrese el id del usuario a eliminar")
-    }
-}
-
-export const updateUser = (req: Request, res: Response, next: NextFunction) => {
+    } catch(error:any) {
+    res.status(500).json({error : error.message})
+  }
+};
+ 
+export const delUser= async (req: Request, res: Response)=>{
+  
   const { id } = req.params;
   try {
-      
-      const { name, lastName, email, phoneNumber, image} = req.body;
-      User.findByPk(id)
-      .then((user) => {
-          if(user){
-              user.name = name || user.name;
-              user.lastName = lastName || user.lastName;
-              user.email = email || user.email;
-              user.phoneNumber =phoneNumber ||user.phoneNumber;
-              user.image = image || user.image;
-            user.save()
-              .then((updated) => {
-                  res.status(200).send(updated);
-              })
-              .catch(error=>{
-                console.log(error)
-                next(error)
-              })
-          } else {
-              res.status(404).send(`Usuario con id ${id} no encontrado`);
-          }
-      });
-  } catch (error) {
-      res.status(400).json(error);
+    if(id){
+      const delUser = await User.findByPk(id)
+      User.destroy(
+        {
+          where:{ id }
+        });
+      delUser ?
+      res.json({ message:"Usuario eliminado con exito!!!", delUser}) :
+      res.json(`Usuario con el ID ${id} no encontrado`)
+    } 
+    else {
+      res.json("Ingrese el ID del usuario a eliminar")
+    }   
+  } catch(error:any){
+    res.status(500).json({error : error.message})
+  }
+};
+
+export const updateUser = (req: Request, res: Response, next: NextFunction) => {
+  
+  const { name, lastName, email, active, phoneNumber, image} = req.body;
+  const { id } = req.params;
+  try {
+    User.findByPk(id)
+    .then((user) => {
+      if(user){
+        user.name = name || user.name;
+        user.lastName = lastName || user.lastName;
+        user.email = email || user.email;
+        user.active = active || user.active;
+        user.phoneNumber =phoneNumber ||user.phoneNumber;
+        user.image = image || user.image;
+        
+        user.save()
+        .then((updated) => {
+          res.status(200).json(updated);
+        });
+      } else {
+        res.status(404).json(`Usuario con id ${id} no encontrado`);
+      }
+    });
+  } catch(error:any){
+    res.status(500).json({error : error.message})
   }
 }
 
@@ -134,8 +136,8 @@ export const activeAdmin = async (req: Request, res: Response, next: NextFunctio
   const{ id }= req.params
   const { idAdmin } = req.params
   const {active, status} = req.body
+  if(active===undefined || !status){return res.status(400).json({message: "No se aceptan campos vacíos"})}
   try {
-    if(active===undefined || !status){return res.status(400).json({message: "No se aceptan campos vacíos"})}
     const admin = await User.findByPk(idAdmin)
     if(admin?.status==="superAdmin"){
        await User.findByPk(id)
@@ -162,7 +164,7 @@ export const activeAdmin = async (req: Request, res: Response, next: NextFunctio
 }
 
 
-/* export const sponsorCat = async (req: Request, res: Response, next: NextFunction)=>{
+export const sponsorCat = async (req: Request, res: Response, next: NextFunction)=>{
   const {id} = req.params; //ul user que va a apadrinar
   const {idCat} = req.params //el gato apadrinado
   const {idAdmin} = req.params; //el admin que tiene la posibilidad de hacer esa asignacion
@@ -172,8 +174,7 @@ export const activeAdmin = async (req: Request, res: Response, next: NextFunctio
       const cat = await Cat.findByPk(idCat)
       if(cat){
         const sponsor = await User.findByPk(id)
-        const previousSponsors = await cat.$get('sponsors'); // Obtener los patrocinadores anteriores
-        await cat.$set('sponsors', [...previousSponsors, sponsor]); // Establecer el nuevo patrocinador
+        await cat.$set<User>("sponsor", sponsor)
         res.send("El usuario con ID " + id + " ahora es el patrocinador del gato con ID " + idCat);
       } else {
         res.status(404).send("No se encontró ningún gato con el ID especificado.");
@@ -184,7 +185,7 @@ export const activeAdmin = async (req: Request, res: Response, next: NextFunctio
   } catch (error) {
     next(error);
   }
-} */
+}
 
 export const orderUser = async (req: Request, res: Response, next: NextFunction)=>{
   const {id, idOrder} = req.params;
@@ -226,6 +227,3 @@ export const validateUser=async(req:Request, res:Response, next:NextFunction)=>{
     res.status(500).json({error:error.message})
   }
 };
-
-
-

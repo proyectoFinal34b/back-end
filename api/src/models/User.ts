@@ -1,11 +1,18 @@
-import {Model, Column, Table, AllowNull, HasMany} from 'sequelize-typescript';
+import {Model, Column, Table, AllowNull, BelongsToMany, HasMany} from 'sequelize-typescript';
 import { IsIn } from 'class-validator';
 import { Cat } from './Cat';
 import { Order } from './Order';
-
+import {UserCat} from "./UserCat"
 
 @Table
 export class User extends Model<User> {
+  
+  [x: string]: any;
+    static find(arg0: { where: { name: any; }; }) {
+        throw new Error('Method not implemented.');
+
+       
+    }
 
 @Column({
     primaryKey:true,
@@ -43,15 +50,15 @@ password!:string
 
 
  @AllowNull(true)
- @Column({defaultValue:"imagendefault"})
+ @Column({defaultValue: "Imagen default"})
  image!: string
 
 @Column({defaultValue:"user"})
 @IsIn(["user", "admin", "superAdmin"])
 status!: string
 
- @HasMany(() => Cat, 'sponsorId')
- sponsoredCats!: Cat[];
+ @BelongsToMany(()=>Cat, ()=> UserCat)
+    cats!: Cat[];
 
  @HasMany(()=> Order, "orderId")
  orders!: Order[];

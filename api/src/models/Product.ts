@@ -1,14 +1,8 @@
-import {
-  Model,
-  Column,
-  Table,
-  DataType,
-  AllowNull,
-  CreatedAt,
-  UpdatedAt,
-  HasMany,
-} from "sequelize-typescript";
 import { Rating } from "./Rating";
+import {Model, Column, Table, DataType, AllowNull, ForeignKey, CreatedAt, UpdatedAt, HasMany, BelongsToMany, BelongsTo} from 'sequelize-typescript';
+import { Category } from './Category';
+import { Order } from './Order';
+import {ProductOrder}  from "./ProductOrder"
 
 @Table
 export class Product extends Model<Product> {
@@ -54,4 +48,17 @@ export class Product extends Model<Product> {
 
   @HasMany(() => Rating)
   ratings!: Rating[];
+
+  // @BelongsToMany(() => Rating, "productRating")
+  //   ratings!: Rating[];
+
+  @BelongsToMany(() => Order, () => ProductOrder)  
+    order!: Order ;
+
+  @ForeignKey(() => Category)
+  @Column(DataType.INTEGER)
+    categoryId!: number;
+
+  @BelongsTo (() => Category)
+    category!: Category;
 }

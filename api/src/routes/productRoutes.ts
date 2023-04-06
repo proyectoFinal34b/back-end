@@ -13,7 +13,7 @@ const router: Router= Router()
 router.get("/", getProductByName)
 router.get("/:id", getProductById)
 router.post("/", postProduct)
-router.post("/:id/ratings", postRating)
+router.post("/:id/ratings", postRating) //Esta ruta también crea el rating
 router.put("/:id", updateProduct)
 router.delete("/:id", delProduct)
 

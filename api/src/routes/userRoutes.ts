@@ -13,7 +13,7 @@ import {
 
 const router: Router= Router()
 
-router.get("/", getUserByName)
+router.get("/", getUserByName) 
 router.get("/validate", validateUser)
 router.get("/:id", getUserById)
 router.post("/", postUser)
