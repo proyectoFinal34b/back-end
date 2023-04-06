@@ -104,17 +104,15 @@ export const updateUser = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
       
-      const { name, lastName, email, active, phoneNumber, image} = req.body;
+      const { name, lastName, email, phoneNumber, image} = req.body;
       User.findByPk(id)
       .then((user) => {
           if(user){
               user.name = name || user.name;
               user.lastName = lastName || user.lastName;
               user.email = email || user.email;
-              user.active = active || user.active;
               user.phoneNumber =phoneNumber ||user.phoneNumber;
               user.image = image || user.image;
-
             user.save()
               .then((updated) => {
                   res.status(200).send(updated);
@@ -136,8 +134,8 @@ export const activeAdmin = async (req: Request, res: Response, next: NextFunctio
   const{ id }= req.params
   const { idAdmin } = req.params
   const {active, status} = req.body
-  if(active===undefined || !status){return res.status(400).json({message: "No se aceptan campos vacíos"})}
   try {
+    if(active===undefined || !status){return res.status(400).json({message: "No se aceptan campos vacíos"})}
     const admin = await User.findByPk(idAdmin)
     if(admin?.status==="superAdmin"){
        await User.findByPk(id)
@@ -164,7 +162,7 @@ export const activeAdmin = async (req: Request, res: Response, next: NextFunctio
 }
 
 
-export const sponsorCat = async (req: Request, res: Response, next: NextFunction)=>{
+/* export const sponsorCat = async (req: Request, res: Response, next: NextFunction)=>{
   const {id} = req.params; //ul user que va a apadrinar
   const {idCat} = req.params //el gato apadrinado
   const {idAdmin} = req.params; //el admin que tiene la posibilidad de hacer esa asignacion
@@ -174,7 +172,8 @@ export const sponsorCat = async (req: Request, res: Response, next: NextFunction
       const cat = await Cat.findByPk(idCat)
       if(cat){
         const sponsor = await User.findByPk(id)
-        await cat.$set<User>("sponsor", sponsor)
+        const previousSponsors = await cat.$get('sponsors'); // Obtener los patrocinadores anteriores
+        await cat.$set('sponsors', [...previousSponsors, sponsor]); // Establecer el nuevo patrocinador
         res.send("El usuario con ID " + id + " ahora es el patrocinador del gato con ID " + idCat);
       } else {
         res.status(404).send("No se encontró ningún gato con el ID especificado.");
@@ -185,7 +184,7 @@ export const sponsorCat = async (req: Request, res: Response, next: NextFunction
   } catch (error) {
     next(error);
   }
-}
+} */
 
 export const orderUser = async (req: Request, res: Response, next: NextFunction)=>{
   const {id, idOrder} = req.params;

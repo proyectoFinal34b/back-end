@@ -78,7 +78,6 @@ export const getOrderById = async (req: Request, res: Response, next: NextFuncti
     }    
 }
 
-
 export const delOrder = async (req: Request, res: Response, next: NextFunction)=>{
     const { id } = req.params;
     if(id){

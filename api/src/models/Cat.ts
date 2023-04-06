@@ -1,5 +1,6 @@
-import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey} from 'sequelize-typescript';
+import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType, BelongsTo, ForeignKey, BelongsToMany} from 'sequelize-typescript';
 import { User } from './User';
+import { CatSponsor } from './CatSponso';
 
 @Table
 export class Cat extends Model<Cat> {
@@ -51,8 +52,8 @@ name!: string;
  @Column
  updatedAt!: Date;
 
- @BelongsTo(() => User, 'sponsorId')
- sponsor!: User;
+ @BelongsToMany(() => User, () => CatSponsor)
+ sponsors!: User[] | null;
  
  @ForeignKey(() => User)
  @Column
