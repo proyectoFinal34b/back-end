@@ -227,6 +227,3 @@ export const validateUser=async(req:Request, res:Response, next:NextFunction)=>{
     res.status(500).json({error:error.message})
   }
 };
-
-
-

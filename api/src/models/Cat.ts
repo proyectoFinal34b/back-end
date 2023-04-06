@@ -61,3 +61,4 @@ name!: string;
  @Column
  sponsorId!: number;
 }
+
