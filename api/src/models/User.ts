@@ -13,8 +13,6 @@ export class User extends Model<User> {
 
        
     }
-@BelongsToMany(()=>Cat, ()=> UserCat)
-    cats!: Cat[];
 
 @Column({
     primaryKey:true,
@@ -59,8 +57,8 @@ password!:string
 @IsIn(["user", "admin", "superAdmin"])
 status!: string
 
- @HasMany(() => Cat, 'sponsorId')
- sponsoredCats!: Cat[];
+ @BelongsToMany(()=>Cat, ()=> UserCat)
+    cats!: Cat[];
 
  @HasMany(()=> Order, "orderId")
  orders!: Order[];
