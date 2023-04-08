@@ -3,6 +3,7 @@ import app from './src/app';
 import config from './lib/config';
 import { createData } from "./src/randomData/data"
 
+
 sequelize.sync({ force: true, logging: false })
   .then(() => {
     console.log('Database synced successfully!');
@@ -12,3 +13,4 @@ sequelize.sync({ force: true, logging: false })
     });
   })
   .catch((err) => console.error('Error syncing database:', err));
+
