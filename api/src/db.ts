@@ -36,3 +36,4 @@ export const sequelize = new Sequelize({
 //   ...sequelize.models,
 //  sequelize
 // }
+
