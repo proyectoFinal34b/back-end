@@ -1,4 +1,4 @@
-import {Model, Column, Table, AllowNull, BelongsToMany, HasMany} from 'sequelize-typescript';
+import {Model, Column, Table, AllowNull, BelongsToMany, HasMany, DataType} from 'sequelize-typescript';
 import { IsIn } from 'class-validator';
 import { Cat } from './Cat';
 import { Order } from './Order';
@@ -45,7 +45,7 @@ password!:string
  defaultValue: boolean = true;
 
  @AllowNull(true)
- @Column
+ @Column(DataType.BIGINT)
  phoneNumber!: number;
 
 
