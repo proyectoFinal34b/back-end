@@ -1,4 +1,4 @@
-import {Model, Column, Table, AllowNull, BelongsToMany, HasMany} from 'sequelize-typescript';
+import {Model, Column, Table, AllowNull, BelongsToMany, HasMany, DataType} from 'sequelize-typescript';
 import { IsIn } from 'class-validator';
 import { Cat } from './Cat';
 import { Order } from './Order';
@@ -13,8 +13,6 @@ export class User extends Model<User> {
 
        
     }
-@BelongsToMany(()=>Cat, ()=> UserCat)
-    cats!: Cat[];
 
 @Column({
     primaryKey:true,
@@ -47,7 +45,7 @@ password!:string
  defaultValue: boolean = true;
 
  @AllowNull(true)
- @Column
+ @Column(DataType.BIGINT)
  phoneNumber!: number;
 
 
@@ -59,8 +57,8 @@ password!:string
 @IsIn(["user", "admin", "superAdmin"])
 status!: string
 
- @HasMany(() => Cat, 'sponsorId')
- sponsoredCats!: Cat[];
+ @BelongsToMany(()=>Cat, ()=> UserCat)
+    cats!: Cat[];
 
  @HasMany(()=> Order, "orderId")
  orders!: Order[];

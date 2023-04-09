@@ -10,10 +10,10 @@ import {
 
 const router: Router= Router()
 
-router.get("/", getProductByName) // que traiga los items independientemente del nombre
+router.get("/", getProductByName)
 router.get("/:id", getProductById)
 router.post("/", postProduct)
-router.post("/:id/ratings", postRating) // no funciona
+router.post("/:id/ratings", postRating) //Esta ruta también crea el rating
 router.put("/:id", updateProduct)
 router.delete("/:id", delProduct)
 

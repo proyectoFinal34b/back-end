@@ -3,10 +3,11 @@ import { delCat, getCatById, getCatByName, postCat,  updateCat } from '../contro
 
 const router: Router= Router()
 
+
 router.get("/", getCatByName)
 router.get("/:id", getCatById)
 router.post("/", postCat)
-router.put("/:id", updateCat) // poner validacion de quien updatea
+router.put("/:id/admin/:idAdmin", updateCat) 
 router.delete("/:id", delCat)
 
 
