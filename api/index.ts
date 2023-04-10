@@ -3,7 +3,7 @@ import app from './src/app';
 import config from './lib/config';
 import { createData } from "./src/randomData/data"
 
-sequelize.sync({ alter: true, logging: false })
+sequelize.sync({ force: true, logging: false })
   .then(() => {
     console.log('Database synced successfully!');
     app.listen(3001, () => {
