@@ -14,7 +14,7 @@ import {
 const router: Router= Router()
 
 router.get("/", getUserByName) 
-router.get("/validate", validateUser)
+router.post("/validate", validateUser)
 router.get("/:id", getUserById)
 router.post("/", postUser)
 router.put("/:id", updateUser)

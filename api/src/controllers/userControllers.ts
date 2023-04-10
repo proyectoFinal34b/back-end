@@ -217,10 +217,13 @@ export const validateUser=async(req:Request, res:Response, next:NextFunction)=>{
     if(!user)return res.status(409).json("Las credenciales no coinciden")
     
     const validateHash = await bcrypt.compare(password, user.password)
-    const validatedUser = await User.findByPk(user.id, {include: [{model:sequelize.models.Cat},{model: sequelize.models.Order}]})
-    validateHash ?
-    res.status(200).json(validatedUser) :
-    res.status(409).json("contraseña incorrecta")
+    const validatedUser = await User.findByPk(user.id, {
+      include: [{ model: sequelize.models.Cat }, { model: sequelize.models.Order }],
+      attributes: { exclude: ['password'] } // Excluir la propiedad 'password'
+    })   
+     validateHash ?
+    res.status(200).json({validatedUser, logged: true}) :
+    res.status(409).json({message:"contraseña incorrecta", logged: false})
 
   } catch (error:any) {
     res.status(500).json({error:error.message})

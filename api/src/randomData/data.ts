@@ -1,10 +1,10 @@
 // @ts-nocheck
-import { Request, Response, NextFunction } from 'express';
 import { User } from "../models/User"
 import { Cat } from "../models/Cat"
 import { Product } from "../models/Product"
 import { Category } from "../models/Category"
 import { Order } from "../models/Order"
+import bcrypt from 'bcrypt'
 
 const cats = [
     {
@@ -322,7 +322,10 @@ const users = [
 
 export const createData = async () => {
     try {
-      await User.create(users[0]);
+     const password =   users[0].password 
+    const passHash:any= await bcrypt.hash(password,10) 
+     
+      await User.create({...users[0], password: passHash});
       await Cat.bulkCreate(cats)
       await Category.bulkCreate(categories)
       await Product.bulkCreate(products)
