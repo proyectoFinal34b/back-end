@@ -12,3 +12,4 @@ sequelize.sync({ alter: true, logging: false })
     });
   })
   .catch((err) => console.error('Error syncing database:', err));
+
