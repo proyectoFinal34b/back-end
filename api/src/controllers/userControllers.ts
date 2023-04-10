@@ -219,7 +219,7 @@ export const validateUser=async(req:Request, res:Response, next:NextFunction)=>{
     const validateHash = await bcrypt.compare(password, user.password)
     const validatedUser = await User.findByPk(user.id, {
       include: [{ model: sequelize.models.Cat }, { model: sequelize.models.Order }],
-      attributes: { exclude: ['password'] } // Excluir la propiedad 'password'
+      attributes: { exclude: ['password'] } 
     })   
      validateHash ?
     res.status(200).json({validatedUser, logged: true}) :
