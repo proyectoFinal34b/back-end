@@ -10,9 +10,10 @@ import {
   validateUser,
   orderUser,
 } from '../controllers/userControllers';
+import { forgotPassword } from '../controllers/forgotPassword';
 
 const router: Router= Router()
-
+router.post("/password", forgotPassword)
 router.get("/", getUserByName) 
 router.post("/validate", validateUser)
 router.get("/:id", getUserById)
