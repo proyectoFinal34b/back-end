@@ -6,6 +6,8 @@ import {UserCat} from "./UserCat"
 
 @Table
 export class User extends Model<User> {
+    static id: any;
+    static email: string | undefined;
   
   [x: string]: any;
     static find(arg0: { where: { name: any; }; }) {
@@ -46,7 +48,14 @@ password!:string
 
  @AllowNull(true)
  @Column(DataType.BIGINT)
- phoneNumber!: number;
+ phoneNumber!: bigint;
+ 
+ @AllowNull(true)
+ @Column
+ adress!: string
+ @AllowNull(true)
+ @Column
+ tokenResetPassword!: string
 
 
  @AllowNull(true)
