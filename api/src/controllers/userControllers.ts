@@ -115,7 +115,6 @@ export const updateUser = (req: Request, res: Response, next: NextFunction) => {
         user.name = name || user.name;
         user.lastName = lastName || user.lastName;
         user.email = email || user.email;
-        user.active = active || user.active;
         user.phoneNumber =phoneNumber ||user.phoneNumber;
         user.image = image || user.image;
         
@@ -218,10 +217,13 @@ export const validateUser=async(req:Request, res:Response, next:NextFunction)=>{
     if(!user)return res.status(409).json("Las credenciales no coinciden")
     
     const validateHash = await bcrypt.compare(password, user.password)
-    const validatedUser = await User.findByPk(user.id, {include: [{model:sequelize.models.Cat},{model: sequelize.models.Order}]})
-    validateHash ?
-    res.status(200).json(validatedUser) :
-    res.status(409).json("contraseña incorrecta")
+    const validatedUser = await User.findByPk(user.id, {
+      include: [{ model: sequelize.models.Cat }, { model: sequelize.models.Order }],
+      attributes: { exclude: ['password'] } 
+    })   
+     validateHash ?
+    res.status(200).json({validatedUser, logged: true}) :
+    res.status(409).json({message:"contraseña incorrecta", logged: false})
 
   } catch (error:any) {
     res.status(500).json({error:error.message})

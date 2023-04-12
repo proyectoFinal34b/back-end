@@ -10,17 +10,18 @@ import {
   validateUser,
   orderUser,
 } from '../controllers/userControllers';
+import { forgotPassword } from '../controllers/forgotPassword';
 
 const router: Router= Router()
-
+router.post("/password", forgotPassword)
 router.get("/", getUserByName) 
-router.get("/validate", validateUser) // \"User\" has multiple relations with \"Cat\
-router.get("/:id", getUserById)// \"User\" has multiple relations with \"Cat\
+router.post("/validate", validateUser)
+router.get("/:id", getUserById)
 router.post("/", postUser)
 router.put("/:id", updateUser)
 router.put("/:id/admin/:idAdmin", activeAdmin)
 router.put("/:id/cat/:idCat/admin/:idAdmin", sponsorCat )
 router.put("/:id/order/:idOrder", orderUser)
-router.delete("/:id", delUser) //el delete crasheo
+router.delete("/:id", delUser)
 
 export default router;    
