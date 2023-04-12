@@ -1,7 +1,8 @@
 import {Response, Request, NextFunction} from 'express';
-import nodemailer from "nodemailer";
+import nodeMailer from "nodemailer";
 import jwt from "jsonwebtoken";
 import { User } from '../models/User';
+import  config from "../../lib/config";
 
  export const forgotPassword =async (req:Request, res: Response, next: NextFunction)=>{
     if(!req.body.email){
@@ -22,33 +23,33 @@ import { User } from '../models/User';
         user.update({
             tokenResetPassword: token
         })
-        let testAccount = await nodemailer.createTestAccount();
+        //let testAccount = await nodeMailer.createTestAccount();
 
         // create reusable transporter object using the default SMTP transport
-        let transporter = nodemailer.createTransport({
-          host: "smtp.ethereal.email",
-          port: 587,
-          secure: false, // true for 465, false for other ports
-          auth: {
-            user: testAccount.user, // generated ethereal user
-            pass: testAccount.pass, // generated ethereal password
-          },
-        });
+        // let transporter = nodemailer.createTransport({
+        //   host: "smtp.ethereal.email",
+        //   port: 587,
+        //   secure: false, // true for 465, false for other ports
+        //   auth: {
+        //     user: testAccount.user, // generated ethereal user
+        //     pass: testAccount.pass, // generated ethereal password
+        //   },
+        // });
       
-        // const transporter = nodemailer.createTransport({
-        //     service:"gmail",
-        //     auth:{
-        //         type:"login",
-        //         user:"bastet1872@gmail.com",
-        //         pass:"ju1872an"
-        //     }
-        // })
+        const transporter = nodeMailer.createTransport({
+            service: "gmail",
+            auth:{
+                user:config.emAdress,
+                pass:config.emPassword,
+            }
+        })
+        console.log(transporter)
     const emailPort ="localhost:3001/user/password";
     
     const mailOption ={
         from:"bastet1872@gmail.com",
         to: `jruiz721818@gmail.com`,
-        subject: "enlace ñara recuperar contraseña",
+        subject: "enlace para recuperar contraseña",
         text:`${emailPort}/${user.id}/${token}`
     }
     console.log(mailOption.text)
