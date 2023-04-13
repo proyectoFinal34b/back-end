@@ -3,13 +3,6 @@ import app from './src/app';
 import config from './lib/config';
 import { createData } from "./src/randomData/data"
 
-<<<<<<< HEAD
-sequelize
-.sync({alter: true, logging: false})
-app.listen(config.dbPort, function () {
- console.log(`App is listening on port ${config.dbPort}!`);
-});
-=======
 sequelize.sync({ force: true, logging: false })
   .then(() => {
     console.log('Database synced successfully!');
@@ -19,5 +12,4 @@ sequelize.sync({ force: true, logging: false })
     });
   })
   .catch((err) => console.error('Error syncing database:', err));
->>>>>>> 544088084645c76218f2205b704d66fce8cf35eb
 

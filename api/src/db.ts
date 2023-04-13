@@ -19,26 +19,3 @@ export const sequelize = new Sequelize({
     models: [__dirname + '/models'],
   });
 
-<<<<<<< HEAD
-=======
-
-//relacion de modelos
-//   function associateModels() {
-//     User.belongsToMany(Cat, { through: 'UserCats' });
-//     Cat.belongsToMany(User, { through: 'UserCats' });
-//     Product.belongsToMany(Category,{ through: 'ProductCategory' })
-//     Category.belongsToMany(Product,{ through: 'ProductCategory' })
-//     User.hasMany(Order)
-//     Order.belongsTo(User)
-//     Order.belongsToMany(Product, { through: 'OrderProduct' });
-//     Product.belongsToMany(Order, { through: 'OrderProduct' });
-// }
-
-// associateModels();
-
-// module.exports = {
-//   ...sequelize.models,
-//  sequelize
-// }
-
->>>>>>> 544088084645c76218f2205b704d66fce8cf35eb
