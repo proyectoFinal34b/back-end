@@ -37,7 +37,7 @@ export const forgotPassword =async (req:Request, res: Response, next: NextFuncti
         from:"bastet1872@gmail.com",
         to: `${user.email}`,
         subject: "Enlace para recuperar contraseña",
-        text:`${emailPort}/${user.id}?name=${token}`,  
+        text:`${emailPort}/${token}`,  
     }
     transporter.sendMail(mailOption, (err, response)=>{
         if(err){
