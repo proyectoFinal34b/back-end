@@ -26,12 +26,6 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
                 res.status(404).json(`Usuario con email ${email} no encontrado`);
               }
             });
-        await  User.findOne({
-                where:{
-                    email:email
-                }
-            }).then(data)
-            
         }
     } catch (error) {
         console.log(error)

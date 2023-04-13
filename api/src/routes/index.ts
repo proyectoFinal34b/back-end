@@ -6,6 +6,8 @@ import categoryRoutes from "./categoryRoutes"
 import orderRoutes from "./orderRoutes"
 import entriesRoutes from "./entriesRoutes"
 import postDbFict from "./postDbFic"
+import paymentRouter from "./paymentRoute"
+
 const router = Router();
 
 router.use('/user', userRoutes);
@@ -15,5 +17,6 @@ router.use('/category', categoryRoutes);
 router.use('/order', orderRoutes);
 router.use('/entries', entriesRoutes)
 router.use("/db",postDbFict)
+router.use("/payment", paymentRouter);
 
 export default router;
