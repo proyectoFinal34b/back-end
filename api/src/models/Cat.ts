@@ -1,8 +1,17 @@
-import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType} from 'sequelize-typescript';
+import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType, ForeignKey, BelongsToMany} from 'sequelize-typescript';
+import { User } from './User';
+import { UserCat } from './UserCat';
 
 @Table
 export class Cat extends Model<Cat> {
-
+  static catId: [];
+  
+  static find(arg0: { where: { name: any; }; }) {
+    throw new Error('Method not implemented.');
+}
+@BelongsToMany(()=>User, ()=> UserCat)
+sponsor!: User[];
+  
 @Column({
     primaryKey:true,
     autoIncrement:true
@@ -15,28 +24,32 @@ name!: string;
 
  @Column
  age!: number;
-
+ 
  @AllowNull(false)
  @Column
+ gender!: string;
+
+ @AllowNull(false)
+ @Column(DataType.TEXT)
  description!:string;
 
  @AllowNull(true)
  @Column(DataType.ARRAY(DataType.STRING))
  image!:string[];
 
- @AllowNull(true)
+ @AllowNull(false)
  @Column({ defaultValue: true })
  status!:boolean;
 
+ @AllowNull(false)
+ @Column
+ state!:string;// establecer como opciones: adoptado || apadrinado || alberge
+
  @AllowNull(true)
  @Column
- arrived!:string
-
- @CreatedAt
- @Column
- createdAt!: Date;
-
- @UpdatedAt
- @Column
- updatedAt!: Date;
+ arrived!:Date
+ 
+ @ForeignKey(() => User)
+ @Column(DataType.ARRAY(DataType.INTEGER))
+ sponsorId!: number[];
 }

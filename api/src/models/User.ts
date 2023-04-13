@@ -1,9 +1,20 @@
-import {Model, Column, Table, CreatedAt, UpdatedAt, AllowNull, DataType} from 'sequelize-typescript';
+import {Model, Column, Table, AllowNull, BelongsToMany, HasMany, DataType} from 'sequelize-typescript';
+import { IsIn } from 'class-validator';
+import { Cat } from './Cat';
+import { Order } from './Order';
+import {UserCat} from "./UserCat"
 
 @Table
 export class User extends Model<User> {
+    static id: any;
+    static email: string | undefined;
+    static tokenResetPassword: any;
+  
+  [x: string]: any;
     static find(arg0: { where: { name: any; }; }) {
         throw new Error('Method not implemented.');
+
+       
     }
 
 @Column({
@@ -15,6 +26,10 @@ id!:number
 @AllowNull(false)
 @Column
 name!: string;
+
+@AllowNull(false)
+@Column
+password!:string
 
 @AllowNull(false)
  @Column
@@ -33,19 +48,28 @@ name!: string;
  defaultValue: boolean = true;
 
  @AllowNull(true)
+ @Column(DataType.BIGINT)
+ phoneNumber!: bigint;
+ 
+ @AllowNull(true)
  @Column
- phoneNumber!: number;
+ adress!: string
+ @AllowNull(true)
+ @Column
+ tokenResetPassword!: string
 
 
  @AllowNull(true)
- @Column({defaultValue:"imagendefault"})
+ @Column({defaultValue: "Imagen default"})
  image!: string
 
- @CreatedAt
- @Column
- createdAt!: Date;
+@Column({defaultValue:"user"})
+@IsIn(["user", "admin", "superAdmin"])
+status!: string
 
- @UpdatedAt
- @Column
- updatedAt!: Date;
+ @BelongsToMany(()=>Cat, ()=> UserCat)
+    cats!: Cat[];
+
+ @HasMany(()=> Order, "orderId")
+ orders!: Order[];
 }

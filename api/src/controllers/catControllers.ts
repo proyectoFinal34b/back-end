@@ -1,5 +1,6 @@
-import {Response, Request, Router, NextFunction} from 'express';
+import {Response, Request, NextFunction} from 'express';
 import { Cat } from '../models/Cat';
+import { User } from '../models/User';
 
  export const getCatByName =(req:Request, res: Response, next: NextFunction)=>{
     const{ name } = req.query
@@ -10,12 +11,19 @@ import { Cat } from '../models/Cat';
                 res.send(findCat);
    })
    .catch((error) => next(error));
-        }
-        else{
-            res.send(`Cat ${name} no encontrado`)
-        }
+        }else{
+            Cat.findAll({ where: { name: name as string } })
+              .then((findCat) => {
+                if(findCat) {
+                  res.send(findCat);
+                } else {
+                  res.status(400).json(`Cat ${name} no encontrado`)
+                }
+              })
+              .catch((error) => next(error));
+          }
     } catch (error) {
-        res.status(400).json( error)
+        res.status(400).send( error)
     }
  }
 
@@ -38,17 +46,19 @@ import { Cat } from '../models/Cat';
     try{
         Cat.create(cat)
         .then((createdCat) => {
-            res.status(200).json({ message:"Cat creado con exito!!!", createdCat,});
+            res.status(200).json({ message:"Cat creado con exito!!!", createdCat});
         })
-        .catch((error) => next(error));
+        .catch((error) =>{
+            console.log(error)
+            next(error)});
     }
     catch(error){
-        res.status(400).json( error)
+        res.status(400).json({msg: error})
     }
 }
 
 export const delCat= async (req: Request, res: Response, next: NextFunction)=>{
-    const {id}=req.body;
+    const {id}=req.params;
     try {
         if(id){
             const delCat = await Cat.findByPk(id)
@@ -69,11 +79,13 @@ export const delCat= async (req: Request, res: Response, next: NextFunction)=>{
     }
 }
 
-export const updateCat = (req: Request, res: Response, next: NextFunction) => {
+export const updateCat = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
+    const { idAdmin } = req.params;
     try {
-        
-        const { name, age, description, image, status, arrived} = req.body;
+        const { name, age, description, image, status, arrived, gender, state} = req.body;
+        const admin = await User.findByPk(idAdmin)
+        if(admin?.status==="admin" || admin?.status==="superAdmin"){
         Cat.findByPk(id)
         .then((cat) => {
             if(cat){
@@ -81,9 +93,10 @@ export const updateCat = (req: Request, res: Response, next: NextFunction) => {
                 cat.age = age || cat.age;
                 cat.description = description || cat.description;
                 cat.status = status || cat.status;
+                cat.gender = gender || cat.gender;
+                cat.state = state || cat.state;
                 cat.arrived =arrived ||cat.arrived;
                 cat.image = image || cat.image;
-  
               cat.save()
                 .then((updated) => {
                     res.status(200).send(updated);
@@ -92,6 +105,10 @@ export const updateCat = (req: Request, res: Response, next: NextFunction) => {
                 res.status(404).send(`Gato con id ${id} no encontrado`);
             }
         });
+        } else {
+            res.status(400).json("No tienes permisos para realizar esa acción")
+        }
+
     } catch (error) {
         res.status(400).json(error);
     }
