@@ -1,3 +1,4 @@
+import { createSecretKey } from 'crypto';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -14,7 +15,7 @@ const config = {
  cors: process.env.CORS  ,
  dialect:process.env.DIALECT,
  emAdress:process.env.EMAIL_ADRESS,
- emPassword:process.env.EMAIL_PASSWORD
+ emPassword:process.env.EMAIL_PASSWORD,
 
 };
 
