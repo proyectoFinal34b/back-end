@@ -2,24 +2,27 @@ import {Response, Request, NextFunction} from 'express';
 import { Product } from "../models/Product"
 import { Rating } from '../models/Rating';
 import { Op } from 'sequelize';
+import { Category } from '../models/Category';
 
 export const getProductByName =(req:Request, res: Response, next: NextFunction)=>{
   const{ name } = req.query
   try {
     if(!name){
-      Product.findAll()
+      Product.findAll({ include: { model: Category } })
         .then((findProduct) => {
           res.send(findProduct);
         })
         .catch((error) => next(error));
     }
     else{
-      Product.findAll({         
+      Product.findAll({
+        include: { model: Category },
         where: {
-        name: {
-          [Op.iLike]: `%${name}%`, // buscar en cualquier parte del nombre ignorando mayúsculas/minúsculas
+          name: {
+            [Op.iLike]: `%${name}%`, // buscar en cualquier parte del nombre ignorando mayúsculas/minúsculas
+          },
         },
-      },})
+      })
         .then((findProduct) => {
           if(findProduct) {
             res.send(findProduct);
@@ -38,7 +41,7 @@ export const getProductById= async (req: Request, res: Response, next: NextFunct
   const { id } = req.params;
   try {
       if(id){
-          const idProduct = await Product.findByPk(id)
+          const idProduct = await Product.findByPk(id, { include: { model: Category } })
           idProduct?
           res.send(idProduct):
           res.send(`Product ID: ${id} not found`)
