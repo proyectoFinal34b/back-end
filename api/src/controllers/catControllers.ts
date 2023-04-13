@@ -1,30 +1,33 @@
 import {Response, Request, NextFunction} from 'express';
 import { Cat } from '../models/Cat';
+import { Op } from 'sequelize';
 
- export const getCatByName =(req:Request, res: Response, next: NextFunction)=>{
-    const{ name } = req.query
-    try {
-        if(!name){
-            Cat.findAll()
-            .then((findCat) => {
-                res.send(findCat);
-   })
-   .catch((error) => next(error));
-        }else{
-            Cat.findAll({ where: { name: name as string } })
-              .then((findCat) => {
-                if(findCat) {
-                  res.send(findCat);
-                } else {
-                  res.status(400).json(`Cat ${name} no encontrado`)
-                }
-              })
-              .catch((error) => next(error));
+export const getCatByName = (req: Request, res: Response, next: NextFunction) => {
+  const { name } = req.query;
+
+  try {
+    if (!name) {
+      Cat.findAll()
+        .then((findCat) => {
+          res.send(findCat);
+        })
+        .catch((error) => next(error));
+    } else {
+      Cat.findAll({ where: { name: { [Op.iLike]: `%${name}%` } } })
+        .then((findCat) => {
+          if (findCat) {
+            res.send(findCat);
+          } else {
+            res.status(400).json(`Cat ${name} no encontrado`);
           }
-    } catch (error) {
-        res.status(400).send( error)
+        })
+        .catch((error) => next(error));
     }
- }
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
 
  export const getCatById= async (req: Request, res: Response, next: NextFunction)=>{
     const { id } = req.params;
