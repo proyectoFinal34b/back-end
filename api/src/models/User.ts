@@ -8,6 +8,7 @@ import {UserCat} from "./UserCat"
 export class User extends Model<User> {
     static id: any;
     static email: string | undefined;
+    static tokenResetPassword: any;
   
   [x: string]: any;
     static find(arg0: { where: { name: any; }; }) {
