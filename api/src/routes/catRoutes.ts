@@ -3,6 +3,7 @@ import { delCat, getCatById, getCatByName, postCat,  updateCat } from '../contro
 
 const router: Router= Router()
 
+
 router.get("/", getCatByName)
 router.get("/:id", getCatById)
 router.post("/", postCat)

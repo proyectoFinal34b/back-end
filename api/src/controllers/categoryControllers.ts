@@ -48,11 +48,11 @@ export const postCategory= function(req: Request, res: Response, next: NextFunct
         .then((createdCategory) => {
             res.status(200).json({message:"categoría creada con éxito.", createdCategory })
         })
-        .catch((error) => next(error));
+        .catch((error) => next(error.message));
     }
 
-    catch(error){
-        res.status(400).json(error)
+    catch(error:any){
+        res.status(400).json(error.message)
     }
 }
 

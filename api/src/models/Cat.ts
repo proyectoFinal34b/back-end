@@ -48,17 +48,9 @@ name!: string;
  @AllowNull(true)
  @Column
  arrived!:Date
-
- @CreatedAt
- @Column
- createdAt!: Date;
-
- @UpdatedAt
- @Column
- updatedAt!: Date;
  
  @ForeignKey(() => User)
- @Column
- sponsorId!: number;
+ @Column(DataType.ARRAY(DataType.INTEGER))
+ sponsorId!: number[];
 }
 
