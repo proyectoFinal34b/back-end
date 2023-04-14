@@ -1,14 +1,27 @@
-import {Response, Request, Router} from 'express';
+import { Router } from 'express';
+import { 
+  postUser,
+  delUser,
+  getUserByName,
+  getUserById,
+  updateUser,
+  activeAdmin,
+  sponsorCat,
+  validateUser,
+  orderUser,
+} from '../controllers/userControllers';
+import { forgotPassword } from '../controllers/forgotPassword';
 
 const router: Router= Router()
+router.post("/password", forgotPassword)
+router.get("/", getUserByName) 
+router.post("/validate", validateUser)
+router.get("/:id", getUserById)
+router.post("/", postUser)
+router.put("/:id", updateUser)
+router.put("/:id/admin/:idAdmin", activeAdmin)
+router.put("/:id/cat/:idCat/admin/:idAdmin", sponsorCat )
+router.put("/:id/order/:idOrder", orderUser)
+router.delete("/:id", delUser)
 
-router.get('/', (req: Request, res: Response) => {
- res.send('soy la ruta getUser!');
-});
-
-router.post('/', (req: Request, res: Response) => {
-    res.send('soy la ruta postUser!');
-   });
-
-
-export default router;
+export default router;    
