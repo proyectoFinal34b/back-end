@@ -17,7 +17,7 @@ export class Product extends Model<Product> {
   name!: string;
 
   @AllowNull(false)
-  @Column
+  @Column(DataType.TEXT)
   summary!: string;
 
   @AllowNull(false)
