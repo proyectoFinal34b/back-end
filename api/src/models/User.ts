@@ -43,10 +43,9 @@ password!:string
  // implementar mensaje email repetido
 
  @AllowNull(false)
- @Column
+ @Column({defaultValue:true})
  active!:boolean;
- defaultValue: boolean = true;
-
+ 
  @AllowNull(true)
  @Column(DataType.BIGINT)
  phoneNumber!: bigint;
