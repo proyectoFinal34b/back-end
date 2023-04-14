@@ -1,118 +1,83 @@
-import {Response, Request, NextFunction} from 'express';
+import { Response, Request } from 'express';
 import nodeMailer from "nodemailer";
-import jwt,{SignOptions} from "jsonwebtoken";
-import { User } from '../models/User';
-import  config from "../../lib/config";
+import jwt, { SignOptions } from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-export const resetPassword = async (req: Request, res: Response, next: NextFunction) =>{
+import { User } from '../models/User';
+import  config from "../../lib/config";
+
+
+export const resetPassword = async (req: Request, res: Response) => {
     const {email, password}= req.body
-    const hashPass = await bcrypt.hash(password,10)
+    if(!email)return res.status(400).send("Debe ingresar un email")   
+    if(!password)return res.status(400).send("Debe ingresar una contraseña")
     try {
-        if(!email){
-            console.log("Debe ingresar un email")
-        }else{
-            User.findOne({where:{
-            email:email
-            }})
+        const hashPass = await bcrypt.hash(password,10)
+        if(hashPass) {
+            User.findOne({where:{email:email}})
             .then((user) => {
-              if(user){
-                user.password = hashPass || user.password;
-                user.save()
-                .then((updated) => {
-                  res.status(200).json(updated);
-                });
-              } else {
-                res.status(404).json(`Usuario con email ${email} no encontrado`);
-              }
+                if(user?.tokenResetPassword) {
+                    user.password = hashPass;
+                    user.tokenResetPassword = ""
+                    user.save()
+                    .then((updated) => {
+                        res.status(200).json(`La contraseña del usuario ${updated.email} fue cambiada`);
+                    });
+                } else {
+                    res.status(404).json("Token no valido");
+                } 
             });
         }
-    } catch (error) {
-        console.log(error)
+    } catch (error:any) {
+        res.status(500).json({error:error.message})
     }
 }
-// export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
-//     const { email } = req.pa;
-//     console.log(token)
-//     try {
-//       if (token) {
-//         const decoded: any = jwt.verify(token, "mysecretekey");
-//         console.log(decoded)
 
-//        // const user = await User.findOne({ decoded });
-//         // if (!user) {
-//         //   return res.status(404).send({ message: 'Usuario no encontrado' });
-//         // }
-//         // console.log(user);
-//       }
-//     } catch (error) {
-//       console.error(error);
-//       return res.status(500).send({ message: 'Ha ocurrido un error al encontrar al usuario' });
-//     }
-//   };
-// export const resetPassword= async (req:Request, res: Response, next: NextFunction)=>{
-//     const {token}=req.params
-//     try {
-//         if(token){
-//             const search = await User.findOne({where:{
-//                 tokenResetPassword:token
-//             }})    
-//             console.log(search)
-        
-//         }
-        
-//     } catch (error) {
-        
-//     }
-
-// }
-export const forgotPassword =async (req:Request, res: Response, next: NextFunction)=>{
-    if(!req.body.email){
-     return    res.status(400).send({message:"El email es requerido"})
-    }
+export const forgotPassword =async (req:Request, res: Response)=>{
+    if(!req.body.email) return res.status(400).send({
+        message:"El Email es requerido"
+    });
     try {
-        const user= await User.findOne<User>({
-            where:{
+        const user = await User.findOne({
+            where : {
                 email:req.body.email
             }
-        })       
-        if(!user){
+        });
+        if(!user) { 
             return res.status(403).send({
                 message:"Email no registrado"
-            })
+            });
         }
-        const token =jwt.sign({id: user.id},"mysecretekey",{ expiresIn:"1h"});
+        const token =jwt.sign({id: user.id},"mysecretekey",{ expiresIn: "1h"});
+        console.log(token);
         user.update({
             tokenResetPassword: token
-        })
+        });
         const transporter = nodeMailer.createTransport({
             host:"smtp.gmail.com",
             auth:{
                 user:config.emAdress,
                 pass:config.emPassword,
             }
-        })
-    // const emailPort ="http://localhost:3001/user/reset";
-    const emailPort ="https://new-front-git-dev-proyectofinal34b.vercel.app/changepassword";
-    
-    const mailOption ={
-        from:"bastet1872@gmail.com",
-        to: `${user.email}`,
-        subject: "Enlace para recuperar contraseña",
-        text:`${emailPort}`,  
-    }
-    transporter.sendMail(mailOption, (err, response)=>{
-        if(err){
-            console.error("No se pudo enviar el Email", err);
-        }else{
-            res.status(200).json("El  Email se envio correctamente")
+        });        
+        const mailOption = {
+            from:"bastet1872@gmail.com",
+            to: `${user.email}`,
+            subject: "Enlace para restablecer contraseña",
+           text:
+           'Estás recibiendo esto porque tú (u otra persona) has solicitado el restablecimiento de la contraseña de tu cuenta.\n\n'
+             + 'Haga clic en el siguiente enlace o péguelo en su navegador para completar el proceso dentro de una hora de haberlo recibido:\n\n'
+             + `${config.urlbase}/changepassword?token=${token}\n\n`
+             + 'Si no solicitó esto, ignore este correo electrónico y su contraseña permanecerá sin cambios.\n',
         }
-    })
-    }catch (error) {
-        res.status(500).send(error)
+        transporter.sendMail(mailOption, (err, response)=>{
+            if(err) return res.status(400).send("No se pudo enviar el Email");
+            return res.status(200).json("El  Email se envio correctamente")    
+        })
+    } catch (error:any) {
+        res.status(500).json({error:error.message})
     }
  }
-function data(value: User | null): User | PromiseLike<User | null> | null {
-    throw new Error('Function not implemented.');
-}
+
+
 

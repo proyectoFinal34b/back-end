@@ -16,6 +16,7 @@ const config = {
  dialect:process.env.DIALECT,
  emAdress:process.env.EMAIL_ADRESS,
  emPassword:process.env.EMAIL_PASSWORD,
+ urlbase:process.env.URL_BASE
 
 };
 
