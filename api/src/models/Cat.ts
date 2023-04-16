@@ -46,6 +46,26 @@ name!: string;
  state!:string;// establecer como opciones: adoptado || apadrinado || alberge
 
  @AllowNull(true)
+ @Column({ defaultValue:"corto"})
+ hairType!:string
+
+ @AllowNull(false)
+ @Column({defaultValue:false})
+ sterilization!:boolean
+
+ @AllowNull(true)
+ @Column({defaultValue:false})
+ vaccinesFull!:boolean
+
+ @AllowNull(true)
+ @Column({defaultValue:false})
+ deworming!:boolean
+
+ @AllowNull(true)
+ @Column({defaultValue:false})
+ chip!:boolean
+
+ @AllowNull(true)
  @Column
  arrived!:Date
  
