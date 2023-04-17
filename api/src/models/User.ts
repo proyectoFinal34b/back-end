@@ -51,7 +51,7 @@ lastName!: string;
  
  @AllowNull(true)
  @Column
- adress!: string
+ address!: string
 
  @AllowNull(true)
  @Column
