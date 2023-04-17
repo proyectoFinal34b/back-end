@@ -6,7 +6,7 @@ import { createData } from "./src/randomData/data"
 sequelize.sync({ force: true, logging: false })
   .then(() => {
     console.log('Database synced successfully!');
-    app.listen(config.dbPort, () => {
+    app.listen(3001, () => {
       console.log(`App is listening on port ${config.dbPort}!`);
       createData(); // Llamamos a la función createData después de que la base de datos esté sincronizada y la aplicación esté escuchando.
     });
