@@ -1,10 +1,21 @@
 import {Response, Request, Router, NextFunction} from 'express';
+import bcrypt from 'bcrypt'
+import nodeMailer from "nodemailer";
+var fs=require('fs');
+require.extensions['.html'] = function (module, filename) {
+    module.exports = fs.readFileSync(filename, 'utf8');
+};
+
+
 import { sequelize } from '../db';
 import { User } from '../models/User';
 import { Op } from 'sequelize';
 import { Cat } from '../models/Cat';
-import bcrypt from 'bcrypt'
 import { Order } from '../models/Order';
+import  config from "../../lib/config";
+
+
+const data = require('../../public/bienvenida.html'); // path to your HTML template
 
 
 export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
@@ -85,6 +96,25 @@ export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
           next(res.status(400).json({msg: error}))});
       }
 
+      const transporter = nodeMailer.createTransport({
+        host:"smtp.gmail.com",
+        auth:{
+            user:config.emAdress,
+            pass:config.emPassword,
+        }
+    });        
+    const mailOption = {
+        from:"bastet1872@gmail.com",
+        to: `${user.email}`,
+        subject: `${user.name}, registro exitoso`,
+        html:data  
+            }
+
+    transporter.sendMail(mailOption, (err, response)=>{
+        if(err) return res.status(400).send("No se pudo enviar el Email");
+        return res.status(200).json("El  Email se envio correctamente")    
+    })
+
     } catch(error:any) {
     res.status(500).json({error : error.message})
   }
@@ -114,7 +144,8 @@ export const delUser= async (req: Request, res: Response)=>{
 
 export const updateUser = (req: Request, res: Response, next: NextFunction) => {
   
-  const { name, lastName, email, address, phoneNumber, image} = req.body;
+
+  const { name, lastName, email, phoneNumber, image, adress} = req.body;
   const { id } = req.params;
   try {
     User.findByPk(id)
@@ -124,6 +155,7 @@ export const updateUser = (req: Request, res: Response, next: NextFunction) => {
         user.lastName = lastName || user.lastName;
         user.email = email || user.email;
         user.phoneNumber =phoneNumber ||user.phoneNumber;
+        user.adress= adress || user.adress
         user.image = image || user.image;
         user.address = address || user.address
         user.save()
@@ -150,8 +182,8 @@ export const activeAdmin = async (req: Request, res: Response, next: NextFunctio
        await User.findByPk(id)
        .then(user=>{
         if(user){
-          user.active = active ;
-          user.status = status ;
+          user.active = active;
+          user.status = status;
          return user.save()
         } else {
           res.status(400).send("Usuario no encontrado")
@@ -211,11 +243,12 @@ export const orderUser = async (req: Request, res: Response, next: NextFunction)
 
   } catch (error:any) {
     res.status(400).json({error: error.message})
+
   }
 }
 
 
-export const validateUser=async(req:Request, res:Response, next:NextFunction)=>{
+export const validateUser = async(req:Request, res:Response, next:NextFunction)=>{
   const {email, password} =req.body
   try {
     if(!email)return res.status(409).json("Debe ingresar un email")

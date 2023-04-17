@@ -49,9 +49,10 @@ lastName!: string;
  @Column(DataType.BIGINT)
  phoneNumber!: bigint;
  
- @AllowNull(true)
+ @AllowNull
  @Column
  address!: string
+
 
  @AllowNull(true)
  @Column
