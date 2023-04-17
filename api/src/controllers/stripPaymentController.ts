@@ -1,7 +1,7 @@
 import {Response, Request, NextFunction} from 'express';
 import Stripe from 'stripe'
 
-const  stripe  =  new  Stripe ( "sk_test_51MxuUbL58axdeL10ID3YrqawVf0RUkWA0i6S9H1dww7yEjvOpaeQXtRmTmYVOye1icsigRY37pXJr9sxaEjumc7F00ZQYB4lZ5" ,  { 
+const  stripe  =  new  Stripe ( "sk_test_51Mw8EZKXctGo6PdRT0FtzwVMJ6uTisOodOgzqE6ePiJQwK9uEYzmul2a8nC1J7VrjasnsHwxNUOhAMJioHG2sgGz00oMZS2UgG" ,  { 
     apiVersion : '2022-11-15' , 
   } ) ;
 
