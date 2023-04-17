@@ -2,10 +2,17 @@ import { Response, Request } from 'express';
 import nodeMailer from "nodemailer";
 import jwt, { SignOptions } from "jsonwebtoken";
 import bcrypt from "bcrypt";
+var fs=require('fs');
+require.extensions['.html'] = function (module, filename) {
+    module.exports = fs.readFileSync(filename, 'utf8');
+};
 
 import { User } from '../models/User';
 import  config from "../../lib/config";
 
+
+
+const data = require('../../public/resetpass.html'); // path to your HTML template
 
 export const resetPassword = async (req: Request, res: Response) => {
     const {email, password}= req.body
@@ -48,7 +55,7 @@ export const forgotPassword =async (req:Request, res: Response)=>{
                 message:"Email no registrado"
             });
         }
-        const token =jwt.sign({id: user.id},"mysecretekey",{ expiresIn: "1h"});
+        const token = jwt.sign({id: user.id},"mysecretekey",{ expiresIn: "1h"});
         console.log(token);
         user.update({
             tokenResetPassword: token
@@ -64,11 +71,8 @@ export const forgotPassword =async (req:Request, res: Response)=>{
             from:"bastet1872@gmail.com",
             to: `${user.email}`,
             subject: "Enlace para restablecer contraseña",
-           text:
-           'Estás recibiendo esto porque tú (u otra persona) has solicitado el restablecimiento de la contraseña de tu cuenta.\n\n'
-             + 'Haga clic en el siguiente enlace o péguelo en su navegador para completar el proceso dentro de una hora de haberlo recibido:\n\n'
-             + `${config.urlbase}/changepassword?token=${token}\n\n`
-             + 'Si no solicitó esto, ignore este correo electrónico y su contraseña permanecerá sin cambios.\n',
+             html:`${data}  '\n\n Haga clic en el siguiente enlace o péguelo en su navegador para completar el proceso de restaurar su contraseña:\n\n'
+              ${config.urlbase}/changepassword?token=${token}\n\n`
         }
         transporter.sendMail(mailOption, (err, response)=>{
             if(err) return res.status(400).send("No se pudo enviar el Email");
