@@ -50,9 +50,10 @@ password!:string
  @Column(DataType.BIGINT)
  phoneNumber!: bigint;
  
- @AllowNull(true)
+ @AllowNull
  @Column
  adress!: string
+
  @AllowNull(true)
  @Column
  tokenResetPassword!: string
