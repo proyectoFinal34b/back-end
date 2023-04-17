@@ -76,7 +76,15 @@ export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
       if(!name || !lastName || !email || !password){
         res.status(422).json({ message: "Falta información: nombre, apellido o correo electrónico" });
         return;
-      }else{
+      }else if(name.length>20){
+        return res.status(400).json("Nombre demasiado largo")
+      }else if(lastName.length>20){
+        return res.status(400).json("Apellido demasiado largo")
+      }else if(password.length>20){
+        return res.status(400).json("Contraseña demasiado larga")
+      }else if(email.length>60){
+        return res.status(400).json("Email demasiado largo")
+      } {
         const passHash:any= await bcrypt.hash(password,10)
 
         User.create({...user, password:passHash})
@@ -136,7 +144,8 @@ export const delUser= async (req: Request, res: Response)=>{
 
 export const updateUser = (req: Request, res: Response, next: NextFunction) => {
   
-  const { name, lastName, email, active, phoneNumber, image, adress} = req.body;
+
+  const { name, lastName, email, phoneNumber, image, adress} = req.body;
   const { id } = req.params;
   try {
     User.findByPk(id)
@@ -148,8 +157,7 @@ export const updateUser = (req: Request, res: Response, next: NextFunction) => {
         user.phoneNumber =phoneNumber ||user.phoneNumber;
         user.adress= adress || user.adress
         user.image = image || user.image;
-        user.active = active || user.active
-        
+        user.address = address || user.address
         user.save()
         .then((updated) => {
           res.status(200).json(updated);

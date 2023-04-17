@@ -22,18 +22,17 @@ export class User extends Model<User> {
     autoIncrement:true
 })
 id!:number
-
 @AllowNull(false)
 @Column
 name!: string;
 
 @AllowNull(false)
 @Column
-password!:string
+password!: string;
 
 @AllowNull(false)
- @Column
- lastName!: string;
+@Column
+lastName!: string;
 
  @AllowNull(false)
  @Column({
@@ -52,15 +51,15 @@ password!:string
  
  @AllowNull
  @Column
- adress!: string
+ address!: string
+
 
  @AllowNull(true)
  @Column
  tokenResetPassword!: string
 
-
  @AllowNull(true)
- @Column({defaultValue: "Imagen default"})
+ @Column({defaultValue: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"})
  image!: string
 
 @Column({defaultValue:"user"})
