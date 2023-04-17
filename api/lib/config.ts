@@ -1,3 +1,4 @@
+import { createSecretKey } from 'crypto';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -12,7 +13,11 @@ const config = {
  port: process.env.API_PORT ,
  host: process.env.API_host  ,
  cors: process.env.CORS  ,
- dialect:process.env.DIALECT 
+ dialect:process.env.DIALECT,
+ emAdress:process.env.EMAIL_ADRESS,
+ emPassword:process.env.EMAIL_PASSWORD,
+ urlbase:process.env.URL_BASE
+
 };
 
 

@@ -8,6 +8,7 @@ import {UserCat} from "./UserCat"
 export class User extends Model<User> {
     static id: any;
     static email: string | undefined;
+    static tokenResetPassword: any;
   
   [x: string]: any;
     static find(arg0: { where: { name: any; }; }) {
@@ -42,17 +43,17 @@ password!:string
  // implementar mensaje email repetido
 
  @AllowNull(false)
- @Column
+ @Column({defaultValue:true})
  active!:boolean;
- defaultValue: boolean = true;
-
+ 
  @AllowNull(true)
  @Column(DataType.BIGINT)
  phoneNumber!: bigint;
  
- @AllowNull(true)
+ @AllowNull
  @Column
  adress!: string
+
  @AllowNull(true)
  @Column
  tokenResetPassword!: string
