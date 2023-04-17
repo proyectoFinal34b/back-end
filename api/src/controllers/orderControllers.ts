@@ -7,7 +7,7 @@ import  config from "../../lib/config";
 import handlebars from "handlebars";
 import fs from "fs";
 
-const source = fs.readFileSync("ruta/al/archivo/de/plantilla.html", "utf8");
+const source = require("../../public/ordencompra.html");
 const template = handlebars.compile(source);
 
 export const getOrder = async (req: Request, res: Response, next: NextFunction) => {

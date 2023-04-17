@@ -17,6 +17,7 @@ const cats = [
         description:"Este gato es un verdadero caballero. Con su pelaje brillante y su porte elegante, sabe cómo atraer todas las miradas. Es un gato de raza mixta con una personalidad única. Le encanta jugar con su pelota de lana y ronronea muy fuerte cuando lo acarician detrás de las orejas. Es un compañero leal y amigable que siempre estará a tu lado.",
         image:["https://www.huellascallejeras.com/wp-content/uploads/2020/10/jose-gato-adulto-en-adopcion-1-580x460.jpg"],
         arrived:"2023-01-02",
+        chip:true,
         updatedAt:"2023-02-20"
     },
     {
