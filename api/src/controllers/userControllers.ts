@@ -145,7 +145,7 @@ export const delUser= async (req: Request, res: Response)=>{
 export const updateUser = (req: Request, res: Response, next: NextFunction) => {
   
 
-  const { name, lastName, email, phoneNumber, image, adress} = req.body;
+  const { name, lastName, email, phoneNumber, image, address} = req.body;
   const { id } = req.params;
   try {
     User.findByPk(id)
@@ -155,7 +155,6 @@ export const updateUser = (req: Request, res: Response, next: NextFunction) => {
         user.lastName = lastName || user.lastName;
         user.email = email || user.email;
         user.phoneNumber =phoneNumber ||user.phoneNumber;
-        user.adress= adress || user.adress
         user.image = image || user.image;
         user.address = address || user.address
         user.save()
