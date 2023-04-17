@@ -22,18 +22,17 @@ export class User extends Model<User> {
     autoIncrement:true
 })
 id!:number
-
 @AllowNull(false)
-@Column(DataType.STRING({ length: 20 }))
+@Column
 name!: string;
 
 @AllowNull(false)
-@Column(DataType.STRING({ length: 20 }))
-password!:string
+@Column
+password!: string;
 
 @AllowNull(false)
- @Column(DataType.STRING({ length: 20 }))
- lastName!: string;
+@Column
+lastName!: string;
 
  @AllowNull(false)
  @Column({
@@ -53,6 +52,7 @@ password!:string
  @AllowNull(true)
  @Column
  adress!: string
+
  @AllowNull(true)
  @Column
  tokenResetPassword!: string

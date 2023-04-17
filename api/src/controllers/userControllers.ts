@@ -65,7 +65,15 @@ export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
       if(!name || !lastName || !email || !password){
         res.status(422).json({ message: "Falta información: nombre, apellido o correo electrónico" });
         return;
-      }else{
+      }else if(name.length>20){
+        return res.status(400).json("Nombre demasiado largo")
+      }else if(lastName.length>20){
+        return res.status(400).json("Apellido demasiado largo")
+      }else if(password.length>20){
+        return res.status(400).json("Contraseña demasiado larga")
+      }else if(email.length>60){
+        return res.status(400).json("Email demasiado largo")
+      } {
         const passHash:any= await bcrypt.hash(password,10)
 
         User.create({...user, password:passHash})
