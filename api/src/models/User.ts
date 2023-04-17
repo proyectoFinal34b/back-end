@@ -24,15 +24,15 @@ export class User extends Model<User> {
 id!:number
 
 @AllowNull(false)
-@Column
+@Column(DataType.STRING({ length: 20 }))
 name!: string;
 
 @AllowNull(false)
-@Column
+@Column(DataType.STRING({ length: 20 }))
 password!:string
 
 @AllowNull(false)
- @Column
+ @Column(DataType.STRING({ length: 20 }))
  lastName!: string;
 
  @AllowNull(false)
