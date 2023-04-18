@@ -92,7 +92,7 @@ export const updateCat = async (req: Request, res: Response, next: NextFunction)
     const { id } = req.params;
     const { idAdmin } = req.params;
     try {
-        const { name, age, description, image, status, arrived, gender, state} = req.body;
+        const { name, age, description, image, status, arrived, gender, state, sterilization, vaccinesFull, hairType, deworming, chip} = req.body;
         const admin = await User.findByPk(idAdmin)
         if(admin?.status==="admin" || admin?.status==="superAdmin"){
         Cat.findByPk(id)
@@ -106,6 +106,11 @@ export const updateCat = async (req: Request, res: Response, next: NextFunction)
                 cat.state = state || cat.state;
                 cat.arrived =arrived ||cat.arrived;
                 cat.image = image || cat.image;
+                cat.sterilization = sterilization || cat.sterilization;
+                cat.vaccinesFull = vaccinesFull || cat.vaccinesFull;
+                cat.hairType = hairType || cat.hairType;
+                cat.deworming = deworming || cat.deworming;
+                cat.chip = chip || cat.chip;
               cat.save()
                 .then((updated) => {
                     res.status(200).send(updated);
