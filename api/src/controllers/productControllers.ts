@@ -3,6 +3,7 @@ import { Product } from "../models/Product"
 import { Rating } from '../models/Rating';
 import { Op } from 'sequelize';
 import { Category } from '../models/Category';
+import { User } from '../models/User';
 
 export const getProductByName =(req:Request, res: Response, next: NextFunction)=>{
   const{ name } = req.query
@@ -95,9 +96,14 @@ export const delProduct = async (req: Request, res: Response, next: NextFunction
   }
 }
 
-export const updateProduct = (req: Request, res: Response, next: NextFunction) => {
+export const updateProduct = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
+  const { idAdmin } = req.params;
+      
   try {
+    const admin = await User.findByPk(idAdmin)
+    if( admin?.status!== "admin" && admin?.status!=="superAdmin"){  res.status(400).json("No tienes permisos para realizar esta acción")}
+    else {   
       const { name, summary, image, stock, price, discount, ratings} = req.body;
       Product.findByPk(id)
       .then((product) => {
@@ -117,7 +123,7 @@ export const updateProduct = (req: Request, res: Response, next: NextFunction) =
           } else {
               res.status(404).send(`Producto con id ${id} no encontrado`);
           }
-      });
+      }); }
   } catch (error) {
       res.status(400).json(error);
   }
