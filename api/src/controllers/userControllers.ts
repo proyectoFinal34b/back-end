@@ -72,53 +72,46 @@ export const getUserByName =(req:Request, res: Response, next: NextFunction)=>{
  export const postUser=async (req: Request, res: Response, next: NextFunction)=>{
     const {name,lastName,email, password} = req.body;
     const user = req.body
-    try{
-      if(!name || !lastName || !email || !password){
-        res.status(422).json({ message: "Falta información: nombre, apellido o correo electrónico" });
-        return;
-      }else if(name.length>20){
-        return res.status(400).json("Nombre demasiado largo")
-      }else if(lastName.length>20){
-        return res.status(400).json("Apellido demasiado largo")
-      }else if(password.length>20){
-        return res.status(400).json("Contraseña demasiado larga")
-      }else if(email.length>60){
-        return res.status(400).json("Email demasiado largo")
-      } {
-        const passHash:any= await bcrypt.hash(password,10)
-
-        User.create({...user, password:passHash})
-        .then((createdUser) => {
-            res.status(200).json({message:"usuario creado con exito!!!", createdUser });
-        })
-        .catch((error) =>{
-          console.log(error)
-          next(res.status(400).json({msg: error}))});
-      }
-
-      const transporter = nodeMailer.createTransport({
-        host:"smtp.gmail.com",
-        auth:{
+    
+    if(!name || !lastName || !email || !password) return res.status(422).json({
+      message: "Falta información: nombre, apellido o correo electrónico"
+    });
+    else if(name.length>20) return res.status(400).json("Nombre demasiado largo")
+    else if(lastName.length>20) return res.status(400).json("Apellido demasiado largo")
+    else if(password.length>20) return res.status(400).json("Contraseña demasiado larga")
+    
+    const passHash:any= await bcrypt.hash(password,10)
+    
+    User.create({...user, password:passHash})
+    .then((createdUser) => {
+      if(createdUser) {
+        const transporter = nodeMailer.createTransport({
+          host:"smtp.gmail.com",
+          auth:{
             user:config.emAdress,
             pass:config.emPassword,
+          }
+        });
+        const mailOption = {
+          from:"bastet1872@gmail.com",
+          to: `${user.email}`,
+          subject: `${user.name}, registro exitoso`,
+          html : data
         }
-    });        
-    const mailOption = {
-        from:"bastet1872@gmail.com",
-        to: `${user.email}`,
-        subject: `${user.name}, registro exitoso`,
-        html:data  
-            }
-
-    transporter.sendMail(mailOption, (err, response)=>{
-        if(err) return res.status(400).send("No se pudo enviar el Email");
-        return res.status(200).json("El  Email se envio correctamente")    
+        transporter.sendMail(mailOption, (err, response) => {
+          if (err) return res.status(400).send(response);
+          return res.status(200).json("El  Email se envio correctamente")
+        })
+      }
     })
+    .catch((error) => {(
+      res.status(400).json({
+        Mensaje: "Usuario ya registrado", error:error.message
+      }))
+    })
+  };
+  
 
-    } catch(error:any) {
-    res.status(500).json({error : error.message})
-  }
-};
  
 export const delUser= async (req: Request, res: Response)=>{
   
