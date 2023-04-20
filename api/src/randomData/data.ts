@@ -736,7 +736,7 @@ const users = [
         lastName: "López",
         email: "pedro@gmail.com",
         phoneNumber: 598097493998,
-        active: true,
+        active: false,
         sponsor: [],
         order: [],
         status: "user"
@@ -747,7 +747,7 @@ const users = [
         lastName: "Fernández",
         email: "luisa@gmail.com",
         phoneNumber: 598097493998,
-        active: true,
+        active: false,
         sponsor: [],
         order: [],
         status: "user"

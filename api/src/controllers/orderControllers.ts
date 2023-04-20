@@ -144,7 +144,7 @@ export const updateOrder = async (req: Request, res: Response, next: NextFunctio
                 order.status = status || order.status;
               order.save()
                 .then((updated) => {
-                    res.status(200).send(updated);
+                    res.status(200).send({updated, message:"Orden actualizada con éxito"});
                 });
             } else {
                 res.status(404).send(`Orden con id ${id} no encontrado`);
