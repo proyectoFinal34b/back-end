@@ -44,7 +44,7 @@ export const getOrder = async (req: Request, res: Response, next: NextFunction) 
     }
   }
 
-export const postOrder= function(req: Request, res: Response, next: NextFunction){
+export const postOrder= async function(req: Request, res: Response, next: NextFunction){
     const order = req.body;
     try{
         Order.create(order)
@@ -52,6 +52,13 @@ export const postOrder= function(req: Request, res: Response, next: NextFunction
         res.status(200).json({message:"orden creada con éxito.", createdOrder });
       })
       .catch((error) => next(error));
+      for (const item of order.list) {
+        const product = await Product.findByPk(item);
+        if (product) {
+          product.stock=product.stock-1; // Elimina de a uno en stock
+          //product.save() ????
+        }
+      }
       const transporter = nodeMailer.createTransport({
         host:"smtp.gmail.com",
         auth:{
