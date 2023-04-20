@@ -7,8 +7,13 @@ import orderRoutes from "./orderRoutes"
 import entriesRoutes from "./entriesRoutes"
 import postDbFict from "./postDbFic"
 import paymentRouter from "./paymentRoute"
+import donateRoutes from "./donateRoutes"
+
+
 
 const router = Router();
+
+router.use("/donate",donateRoutes)
 
 router.use('/user', userRoutes);
 router.use('/cat', catRoutes);
