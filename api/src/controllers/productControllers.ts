@@ -42,7 +42,7 @@ export const getProductById= async (req: Request, res: Response, next: NextFunct
   const { id } = req.params;
   try {
       if(id){
-          const idProduct = await Product.findByPk(id, { include: { model: Category } })
+          const idProduct = await Product.findByPk(id, { include: [{ model: Category }, { model: Rating}] })
           idProduct?
           res.send(idProduct):
           res.send(`Product ID: ${id} not found`)
@@ -104,7 +104,7 @@ export const updateProduct = async (req: Request, res: Response, next: NextFunct
     const admin = await User.findByPk(idAdmin)
     if( admin?.status!== "admin" && admin?.status!=="superAdmin"){  res.status(400).json("No tienes permisos para realizar esta acción")}
     else {   
-      const { name, summary, image, stock, price, discount, ratings} = req.body;
+      const { name, summary, image, stock, active, price, discount, ratings} = req.body;
       Product.findByPk(id)
       .then((product) => {
           if(product){
@@ -115,7 +115,7 @@ export const updateProduct = async (req: Request, res: Response, next: NextFunct
               product.price = price ||product.price;
               product.discount = discount || product.discount;
               product.ratings = ratings || product.ratings;
-
+              product.active = active
             product.save()
               .then((updated) => {
                   res.status(200).send(updated);
