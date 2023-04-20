@@ -11,7 +11,7 @@ const data = require('../../public/donacion.html')
 
 export const postDonated =async (req: Request, res: Response, next: NextFunction)=>{
 
-    const {email}=req.body  
+    const {user}=req.body  
     
     const transporter = nodeMailer.createTransport({
         host: "smtp.gmail.com",
@@ -22,7 +22,7 @@ export const postDonated =async (req: Request, res: Response, next: NextFunction
     });
         const mailOption = {
           from:"bastet1872@gmail.com",
-          to: `${email}`,
+          to: `${user.email}`,
           subject: `Donacion exitosa`,
           html : data,
         }
